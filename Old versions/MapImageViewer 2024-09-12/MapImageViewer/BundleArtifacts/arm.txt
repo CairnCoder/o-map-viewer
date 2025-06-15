@@ -1,0 +1,2 @@
+MainPackage=C:\Users\carnf\OneDrive\Documents\Coding\Projects\MapImageViewer\MapImageViewer\bin\ARM\Release\MapImageViewer_1.0.12.0_ARM.msix
+SymbolPackage=C:\Users\carnf\OneDrive\Documents\Coding\Projects\MapImageViewer\MapImageViewer\obj\ARM\Release\Symbols\MapImageViewer_1.0.12.0_ARM.appxsym

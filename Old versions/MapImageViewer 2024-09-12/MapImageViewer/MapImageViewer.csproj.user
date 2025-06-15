@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <UapAppxPackageBuildMode>StoreAndSideload</UapAppxPackageBuildMode>
+    <AppxShowAllApps>False</AppxShowAllApps>
+    <AppxBuildConfigurationSelection>x64</AppxBuildConfigurationSelection>
+    <PackageOptionalProjectsInIdeBuilds>False</PackageOptionalProjectsInIdeBuilds>
+    <Source>C:\Users\carnf\OneDrive\Documents\Coding\Projects\MapImageViewer\MapImageViewer\IconMap.png</Source>
+    <SmallTileSource>C:\Users\carnf\OneDrive\Documents\Coding\Projects\MapImageViewer\MapImageViewer\IconMap.png</SmallTileSource>
+    <MediumTileSource>C:\Users\carnf\OneDrive\Documents\Coding\Projects\MapImageViewer\MapImageViewer\IconMap.png</MediumTileSource>
+    <WideTileSource>C:\Users\carnf\OneDrive\Documents\Coding\Projects\MapImageViewer\MapImageViewer\IconMap.png</WideTileSource>
+    <LargeTileSource>C:\Users\carnf\OneDrive\Documents\Coding\Projects\MapImageViewer\MapImageViewer\IconMap.png</LargeTileSource>
+    <AppIconSource>C:\Users\carnf\OneDrive\Documents\Coding\Projects\MapImageViewer\MapImageViewer\IconMap.png</AppIconSource>
+    <SplashScreenSource>C:\Users\carnf\OneDrive\Documents\Coding\Projects\MapImageViewer\MapImageViewer\IconMap.png</SplashScreenSource>
+    <BadgeLogoSource>C:\Users\carnf\OneDrive\Documents\Coding\Projects\MapImageViewer\MapImageViewer\IconMap.png</BadgeLogoSource>
+    <PackageLogoSource>C:\Users\carnf\OneDrive\Documents\Coding\Projects\MapImageViewer\MapImageViewer\IconMap.png</PackageLogoSource>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <DeviceId>30f105c9-681e-420b-a277-7c086ead8a4e</DeviceId>
+    <UseEmulator>true</UseEmulator>
+  </PropertyGroup>
+</Project>

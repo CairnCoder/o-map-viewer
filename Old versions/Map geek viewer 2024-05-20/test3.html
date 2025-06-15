@@ -1,0 +1,58 @@
+<html>
+<head>
+<style>
+    * {
+        margin: 0;
+        box-sizing: border-box;
+    }
+    .flex-container-top {
+    display: flex;
+    flex-flow: row wrap;
+    align-content: flex-end;
+    justify-content: space-around;
+    background-color: lightgray;
+    }
+
+    .flex-container-top > button, .flex-container-top > div {
+    background-color: #f1f1f1;
+    height: 3rem;
+    width: 3rem;
+    border: solid 0.1rem black;
+    }
+
+
+
+
+    .flex-container-right {
+    display: flex;
+    flex-flow: column wrap;
+    align-content: flex-end;
+    justify-content: space-around;
+    background-color: lightgray;
+    
+    }
+
+    .flex-container-right > button, .flex-container-right > div {
+    background-color: #f1f1f1;
+    height: 3rem;
+    width: 3rem;
+    border: solid 0.1rem black;
+    }
+    
+    
+
+    .last {
+        margin-left: auto;
+    }
+</style>
+</head>
+<body>
+    <div class="flex-container-top">
+        <button onclick="alert('hi 1')">1</button>
+        <button onclick="alert('hi 2')">2</button>
+        <button onclick="alert('hi 3')">3</button> 
+        <div>13</div>
+    </div>
+    <div style="height: 100%; width: 100%; background-color: orange;"></div>
+</body>
+</html>

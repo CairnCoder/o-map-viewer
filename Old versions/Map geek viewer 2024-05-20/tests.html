@@ -1,0 +1,126 @@
+<html>
+    <style>
+        * {
+            margin: 0;
+        }
+        .navbarHorizontal-Element {
+            display: block;
+            float: left;
+        }
+
+        .navbar {
+            background-color: gray;
+            display: block;
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+
+
+        /* Dropdown Content (Hidden by Default) */
+        .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        box-shadow: 0rem 0.5rem 1rem 0rem rgba(0,0,0,0.2);
+        z-index: 1;
+        }
+
+        /* Links inside the dropdown */
+        .dropdown-content a {
+        color: black;
+        height: 3rem;
+        width: 3rem;
+        text-decoration: none;
+        display: block;
+        }
+
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {
+            background-color: #f1f1f1
+        }
+
+        /* Show the dropdown menu on hover */
+        .dropdown:hover .dropdown-content {
+            display: block; /* ### block=bellow inline-block=to side ### */
+        }
+
+        /* Change the background color of the dropdown button when the dropdown content is shown */
+        .dropdown:hover .dropbtn {
+        background-color: #3e8e41;
+        }
+
+        /* Style The Dropdown Button */
+        .dropbtn {
+        background-color: #4CAF50;
+        color: white;
+        height: 3rem;
+        width: 3rem;
+        border: none;
+        cursor: pointer;
+        }
+    </style>
+    <body>
+        <div class="navbar">
+            <div class="dropdown navbarHorizontal-Element">
+                <button class="dropbtn">click me</button>
+            </div>
+            <div class="dropdown navbarHorizontal-Element">
+                <button class="dropbtn">Drop</button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>
+            <div class="dropdown navbarHorizontal-Element">
+                <button class="dropbtn">click me</button>
+            </div>
+            <div class="dropdown navbarHorizontal-Element">
+                <label class="dropbtn">lable</button>
+            </div>
+            <div class="dropdown navbarHorizontal-Element">
+                <button class="dropbtn">Drop</button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>
+            
+            <div class="dropdown navbarHorizontal-Element" style="float: right;">
+                <button class="dropbtn">Drop</button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>
+            <!-- <div class="dropdown">
+                <button class="dropbtn">Dropdown</button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn">Dropdown</button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn">Dropdown</button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div> -->
+        </div>
+        <div id="map" class="map" style="display: block; height: 100%; background-color: lightblue;"></div>
+    </body>
+</html>

@@ -1,0 +1,43 @@
+// Calculate the target pixel position
+int x = (int)(writeableBitmap.PixelWidth / MapImage.ActualWidth * position.X);
+int y = (int)(writeableBitmap.PixelHeight / MapImage.ActualHeight * position.Y);
+
+// Get the target color from the bitmap at the calculated position
+Color targetColor = writeableBitmap.GetPixel(x, y);
+
+int threshold = string.IsNullOrEmpty(colourPickerThreshold.Text)
+    ? int.Parse(colourPickerThreshold.PlaceholderText)
+    : int.Parse(colourPickerThreshold.Text);
+
+byte[] pixels;
+using (var stream = writeableBitmap.PixelBuffer.AsStream())
+{
+    // Buffer for reading and writing pixel data
+    pixels = new byte[writeableBitmap.PixelWidth * writeableBitmap.PixelHeight * 4];
+    stream.Read(pixels, 0, pixels.Length);
+
+    for (int i = 0; i < pixels.Length; i += 4)
+    {
+        // Extract color from buffer (BGRA format)
+        Color currentColor = Color.FromArgb(pixels[i + 3], pixels[i + 2], pixels[i + 1], pixels[i]);
+
+        // Apply ColorsAreClose formula
+        if (!ColorsAreClose(targetColor, currentColor, threshold))
+        {
+            // Set alpha to 0 if colors are not close (make pixel transparent)
+            pixels[i + 3] = 0;
+            //pixels[i + 3] = 0; pixels[i + 2] = 0; pixels[i + 1] = 0; pixels[i] = 0;
+        }
+    }
+
+    // Write modified pixels back to the stream
+    stream.Seek(0, SeekOrigin.Begin);
+    stream.Write(pixels, 0, pixels.Length);
+
+}
+writeableBitmap = new WriteableBitmap(writeableBitmap.PixelWidth, writeableBitmap.PixelHeight);
+using (var stream = writeableBitmap.PixelBuffer.AsStream())
+{
+    stream.Write(pixels, 0, pixels.Length);
+}
+MapImage.Source = writeableBitmap;
