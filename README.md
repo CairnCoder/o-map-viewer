@@ -1,6 +1,7 @@
 ## O-map viewer
 
 This is a project I envisioned in 2018.
+
 It is code for a website that can be used to study (Orienteering) maps in bitmap format.
 
 
