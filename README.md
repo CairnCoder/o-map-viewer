@@ -11,11 +11,8 @@ If you are an Orienteer, you will understand the puropse quite quickly.
 The key features I wanted to combine were the colour-picking tools from GIMP, the ability to use touchscreen interactions (zoom, pan, and rotate), some basic leg-viewing capabilities, and distance measurements. 
 
 This is a working version and can be found at <a>https://omapviewer.pythonanywhere.com/</a>.
-<p float="left">
-  <img src="https://github.com/user-attachments/assets/7583b0d7-7fa4-4080-a5f8-52bc0f6b40f7" width="200" />
-  <img src="https://github.com/user-attachments/assets/74b5bb80-b20a-4823-b0b7-19b0584ea36e" width="200" /> 
-  <img src="https://github.com/user-attachments/assets/e6f077db-8f16-4374-903b-1aabe5fbcc16" width="200" />
+<p>
+  <img src="https://github.com/user-attachments/assets/7583b0d7-7fa4-4080-a5f8-52bc0f6b40f7" width="*" />
+  <img src="https://github.com/user-attachments/assets/74b5bb80-b20a-4823-b0b7-19b0584ea36e" width="*" /> 
+  <img src="https://github.com/user-attachments/assets/e6f077db-8f16-4374-903b-1aabe5fbcc16" width="*" />
 </p>
-![example1](https://github.com/user-attachments/assets/7583b0d7-7fa4-4080-a5f8-52bc0f6b40f7)
-![example2](https://github.com/user-attachments/assets/74b5bb80-b20a-4823-b0b7-19b0584ea36e)
-![example3](https://github.com/user-attachments/assets/e6f077db-8f16-4374-903b-1aabe5fbcc16)
