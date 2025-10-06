@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>O-Map Viewer</title>
+  <script src="https://cdn.jsdelivr.net/npm/ol@latest/dist/ol.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@latest/ol.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="appContainer">
+    <div id="toolbar" class="shadow">
+      <input type="file" id="imageUploader" accept="image/*" style="display: none;">
+      <button id="uploadImageBtn" class="btn btn-sm btn-warning">
+        <i class="bi bi-upload me-1"></i> Upload
+      </button>
+
+      <div class="btn-group btn-group-sm align-items-stretch flex-nowrap" role="group" aria-label="Threshold and Color Tools">
+        <div class="btn p-0 border border-dark">
+          <input type="number" id="threshold" class="form-control form-control-sm border-0" value="30" min="0" max="442" placeholder="###">
+        </div>
+        <button id="pickColorBtn" class="btn btn-secondary">
+          <i class="bi bi-eyedropper"></i>
+        </button>
+        <button id="resetImageBtn" class="btn btn-danger btn-square">
+          <i class="bi bi-arrow-counterclockwise"></i>
+        </button>
+      </div>
+
+      <div id="measure-group" class="btn-group btn-group-sm" role="group" aria-label="Measure tools">
+        <button id="measure-btn" class="btn btn-secondary"><i class="bi bi-rulers me-1"></i> Measure</button>
+        <button id="clear-btn" class="btn btn-danger btn-square"><i class="bi bi-trash"></i></button>
+      </div>
+
+      <div class="btn-group btn-group-sm" role="group" aria-label="Draw leg tools">
+        <button id="drawLegBtn" class="btn btn-secondary"><span style="display: inline-block; transform: rotate(-45deg); margin-right: 0.3em;">⚯</span> Draw</button>
+        <button id="clearLegBtn" class="btn btn-danger btn-square"><i class="bi bi-trash"></i></button>
+      </div>
+
+      <input type="color" id="backgroundColorPicker" style="display: none;"> 
+      <button id="pickBackgroundBtn" class="btn btn-sm btn-secondary">
+        <i class="bi bi-palette me-1"></i> Background
+      </button>
+
+      <div class="btn-group btn-group-sm" role="group" aria-label="Zoom controls">
+        <button id="zoomInBtn" class="btn btn-success">+</button>
+        <button id="zoomOutBtn" class="btn btn-success">−</button>
+      </div>
+
+      <div class="btn-group btn-group-sm" role="group" aria-label="Rotate controls">
+        <button id="rotateLeftBtn" class="btn btn-success">↶</button>
+        <button id="rotateRightBtn" class="btn btn-success">↷</button>
+      </div>
+
+      <button id="resetViewBtn" class="btn btn-sm btn-success">
+        <i class="bi bi-arrow-counterclockwise me-1"></i> View
+      </button>
+
+      <button id="fullscreenToggle" class="btn btn-secondary">⛶ Fullscreen</button>
+
+      <button id="helpBtn" class="btn btn-info">
+        <i class="bi bi-question-circle me-1"></i> Help
+      </button>
+
+      <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#creditsModal">© Credits</button>
+
+    </div>
+
+    <div id="map"></div>
+
+    <div class="modal fade" id="creditsModal" tabindex="-1" aria-labelledby="creditsModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="creditsModalLabel">Credits</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p><strong>O-Map Viewer</strong></p>
+            <p>Built with:</p>
+            <ul>
+              <li>
+                <a href="https://openlayers.org/" target="_blank" rel="noopener noreferrer">OpenLayers</a> —
+                An open-source JavaScript library used for interactive map rendering and spatial tools, licensed under the BSD 2-Clause License.
+                <br>
+                <small>
+                  This application uses OpenLayers for its mapping functionality without external map tile services, so no additional data attribution is required.
+                  License details available <a href="https://github.com/openlayers/openlayers/blob/main/LICENSE.md" target="_blank" rel="noopener noreferrer">here</a>.
+                </small>
+              </li>
+
+              <li>
+                <a href="https://getbootstrap.com/" target="_blank" rel="noopener noreferrer">Bootstrap 5</a> —
+                Front-end framework released under the MIT License.
+                <br>
+                <small>
+                  License information available <a href="https://github.com/twbs/bootstrap/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">here</a>.
+                </small>
+              </li>
+              <li>JavaScript Canvas API</li>
+              <li>ChatGPT 4 (4o)</li>
+            </ul>
+
+            <p>
+              Developed by Matthew Gooch.<br>
+              <i>Copyright © Matthew Gooch.</i>
+            </p>
+
+            <p>
+              This is a project I (Matthew Gooch) envisioned in 2018. However, it is only now, in 2025, with the advent of accelerated programming using ChatGPT, that it has been realised.
+              Prior to these AI tools, I had developed a version that was acceptable but only suited for Windows devices as a desktop program.
+              Now, it is available online. My previous attempts probably totalled 300–400 hours of work, but with the aid of ChatGPT and newer versions of OpenLayers, this latest version was completed in just 20 hours.
+              <br>
+              The key features I wanted to combine were the colour-picking tools from GIMP, the ability to use touchscreen interactions to zoom, pan, and rotate the map,
+              and finally to set up basic leg-viewing capabilities with distance measurements. The result is a simple piece of software that can be used to geek maps ahead of races.
+              <br>
+              This is a work in progress. Known issues are listed <a href="/issues.html">here</a>.<br>
+              If there are any problems or suggestions, please let me know.
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="helpModalLabel">Help & Instructions</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p><strong>How to use the Map Viewer:</strong></p>
+            <ul>
+              <li><strong>Upload Image</strong>: Choose an image to display on the map.</li>
+              <li><strong>Pick Color</strong>: Click on the image to select a color to preserve (others will become transparent).</li>
+              <li><strong>Threshold</strong>: Adjust tolerance for color similarity.</li>
+              <li><strong>Pick Background</strong>: Change the map background color.</li>
+              <li><strong>Zoom/Rotate</strong>: Use buttons to zoom or rotate the view.</li>
+              <li><strong>Reset View</strong>: Resets the map to fit the image and zero rotation.</li>
+            </ul>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="position-fixed bottom-0 end-0 p-1" style="z-index: 1100">
+      <div id="infoToastPickColour" class="toast align-items-center text-bg-dark border-0 m-1" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">
+            Click on the image to isolate a colour.
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+      <div id="infoToastStarterHelp" class="toast align-items-center text-bg-dark border-0 m-1" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">
+            To start, click upload and select a map image.
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
