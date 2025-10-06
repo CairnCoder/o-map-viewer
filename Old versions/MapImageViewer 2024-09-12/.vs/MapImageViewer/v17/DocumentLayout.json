@@ -1,0 +1,90 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\carnf\\OneDrive\\Documents\\Coding\\Projects\\MapImageViewer\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{1AF8CDC1-C8E6-4543-8A5C-D21426157BD8}|MapImageViewer\\MapImageViewer.csproj|c:\\users\\carnf\\onedrive\\documents\\coding\\projects\\mapimageviewer\\mapimageviewer\\package.appxmanifest||{4D47164B-07B6-4A52-A855-728D6A2E2AA3}",
+      "RelativeMoniker": "D:0:0:{1AF8CDC1-C8E6-4543-8A5C-D21426157BD8}|MapImageViewer\\MapImageViewer.csproj|solutionrelative:mapimageviewer\\package.appxmanifest||{4D47164B-07B6-4A52-A855-728D6A2E2AA3}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|MapImageViewer||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1AF8CDC1-C8E6-4543-8A5C-D21426157BD8}|MapImageViewer\\MapImageViewer.csproj|c:\\users\\carnf\\onedrive\\documents\\coding\\projects\\mapimageviewer\\mapimageviewer\\helpcontentdialog.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{1AF8CDC1-C8E6-4543-8A5C-D21426157BD8}|MapImageViewer\\MapImageViewer.csproj|solutionrelative:mapimageviewer\\helpcontentdialog.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1AF8CDC1-C8E6-4543-8A5C-D21426157BD8}|MapImageViewer\\MapImageViewer.csproj|C:\\Users\\carnf\\OneDrive\\Documents\\Coding\\Projects\\MapImageViewer\\mapimageviewer\\mainpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1AF8CDC1-C8E6-4543-8A5C-D21426157BD8}|MapImageViewer\\MapImageViewer.csproj|solutionrelative:mapimageviewer\\mainpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1AF8CDC1-C8E6-4543-8A5C-D21426157BD8}|MapImageViewer\\MapImageViewer.csproj|c:\\users\\carnf\\onedrive\\documents\\coding\\projects\\mapimageviewer\\mapimageviewer\\||{B270807C-D8C6-49EB-8EBE-8E8D566637A1}|f8d6553f-f752-4dbf-acb6-f291b744a792"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Package.appxmanifest",
+              "DocumentMoniker": "C:\\Users\\carnf\\OneDrive\\Documents\\Coding\\Projects\\MapImageViewer\\MapImageViewer\\Package.appxmanifest",
+              "RelativeDocumentMoniker": "MapImageViewer\\Package.appxmanifest",
+              "ToolTip": "C:\\Users\\carnf\\OneDrive\\Documents\\Coding\\Projects\\MapImageViewer\\MapImageViewer\\Package.appxmanifest",
+              "RelativeToolTip": "MapImageViewer\\Package.appxmanifest",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001793|",
+              "WhenOpened": "2024-12-28T09:28:28.224Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MapImageViewer",
+              "DocumentMoniker": "C:\\Users\\carnf\\OneDrive\\Documents\\Coding\\Projects\\MapImageViewer\\MapImageViewer\\MapImageViewer.csproj",
+              "RelativeDocumentMoniker": "MapImageViewer\\MapImageViewer.csproj",
+              "ToolTip": "C:\\Users\\carnf\\OneDrive\\Documents\\Coding\\Projects\\MapImageViewer\\MapImageViewer\\MapImageViewer.csproj",
+              "RelativeToolTip": "MapImageViewer\\MapImageViewer.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-12-28T09:22:05.686Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "HelpContentDialog.xaml",
+              "DocumentMoniker": "C:\\Users\\carnf\\OneDrive\\Documents\\Coding\\Projects\\MapImageViewer\\MapImageViewer\\HelpContentDialog.xaml",
+              "RelativeDocumentMoniker": "MapImageViewer\\HelpContentDialog.xaml",
+              "ToolTip": "C:\\Users\\carnf\\OneDrive\\Documents\\Coding\\Projects\\MapImageViewer\\MapImageViewer\\HelpContentDialog.xaml",
+              "RelativeToolTip": "MapImageViewer\\HelpContentDialog.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-12-27T22:01:56.244Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MainPage.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\carnf\\OneDrive\\Documents\\Coding\\Projects\\MapImageViewer\\MapImageViewer\\MainPage.xaml.cs",
+              "RelativeDocumentMoniker": "MapImageViewer\\MainPage.xaml.cs",
+              "ToolTip": "C:\\Users\\carnf\\OneDrive\\Documents\\Coding\\Projects\\MapImageViewer\\MapImageViewer\\MainPage.xaml.cs",
+              "RelativeToolTip": "MapImageViewer\\MainPage.xaml.cs",
+              "ViewState": "AgIAABYDAAAAAAAAAAD4vyMDAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-02T11:57:25.056Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

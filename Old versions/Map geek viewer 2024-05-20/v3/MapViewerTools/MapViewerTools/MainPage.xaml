@@ -1,0 +1,25 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MapViewerTools"
+             x:Class="MapViewerTools.MainPage"
+             xmlns:drawable="clr-namespace:MapViewerTools"
+             IsBusy="True">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Open" />
+        <ToolbarItem Text="Reset" />
+        <ToolbarItem Text="Map vis." />
+        <ToolbarItem Text="Back colour" />
+        <ToolbarItem Text="Save" />
+        <ToolbarItem Text="Full screen" />
+        <ToolbarItem Text="Help" />
+        <ToolbarItem Text="Credits" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Resources>
+        <drawable:GraphicsDrawable x:Key="drawable" x:Name="graphic"/>
+    </ContentPage.Resources>
+    <VerticalStackLayout>
+        <GraphicsView Drawable="{StaticResource drawable}"
+                      HeightRequest="300"
+                      WidthRequest="400" />
+    </VerticalStackLayout>
+</ContentPage>

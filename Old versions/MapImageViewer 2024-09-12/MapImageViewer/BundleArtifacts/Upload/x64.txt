@@ -1,0 +1,6 @@
+MainPackage=C:\Users\carnf\OneDrive\Documents\Coding\Projects\MapImageViewer\MapImageViewer\bin\x64\Release\Upload\MapImageViewer_1.0.15.0_x64.msix
+SymbolPackage=C:\Users\carnf\OneDrive\Documents\Coding\Projects\MapImageViewer\MapImageViewer\bin\x64\Release\Upload\MapImageViewer_1.0.15.0\MapImageViewer_1.0.15.0_x64.appxsym
+ResourcePack=C:\Users\carnf\OneDrive\Documents\Coding\Projects\MapImageViewer\MapImageViewer\bin\x64\Release\Upload\MapImageViewer_1.0.15.0_scale-100.msix
+ResourcePack=C:\Users\carnf\OneDrive\Documents\Coding\Projects\MapImageViewer\MapImageViewer\bin\x64\Release\Upload\MapImageViewer_1.0.15.0_scale-125.msix
+ResourcePack=C:\Users\carnf\OneDrive\Documents\Coding\Projects\MapImageViewer\MapImageViewer\bin\x64\Release\Upload\MapImageViewer_1.0.15.0_scale-150.msix
+ResourcePack=C:\Users\carnf\OneDrive\Documents\Coding\Projects\MapImageViewer\MapImageViewer\bin\x64\Release\Upload\MapImageViewer_1.0.15.0_scale-400.msix
