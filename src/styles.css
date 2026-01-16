@@ -157,3 +157,4 @@ input[type=number] {
     }
 }
 
+body[data-js="ok"] #toolbar { outline: 3px solid red; }
