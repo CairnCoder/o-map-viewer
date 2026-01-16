@@ -20,3 +20,6 @@ This is a working version and can be found at <a>https://omapviewer.pythonanywhe
 </p>
 
 
+## License
+
+All rights reserved. This code is not licensed for reuse.
