@@ -10,7 +10,7 @@ However, it is only now, in 2025, with the advent of accelerated programming usi
 If you are an Orienteer, you will understand the puropse quite quickly.
 The key features I wanted to combine were the colour-picking tools from GIMP, the ability to use touchscreen interactions (zoom, pan, and rotate), some basic leg-viewing capabilities, and distance measurements. 
 
-This is a working version and can be found at <a>https://omapviewer.pythonanywhere.com/</a>.
+This is a working version and can be found at <a href='https://cairncoder.github.io/o-map-viewer/'>https://cairncoder.github.io/o-map-viewer/</a>.
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/4daa9441-1dee-4e8a-b601-45f21c9f033c" height="250px" maxwidth="25%" /> 
