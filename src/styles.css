@@ -19,6 +19,8 @@ html, body {
     z-index: 1000;
     display: flex;
     flex-shrink: 0;
+    align-self: stretch;      /* critical: makes it fill height in row layout */
+    box-sizing: border-box;
 }
 
 #map {
@@ -155,4 +157,29 @@ input[type=number] {
     height: 100%;
     flex: none;
     }
+}
+
+
+
+
+
+/* Fallback for Android WebView when aspect-ratio MQ is wrong */
+@media (orientation: landscape) {
+  #appContainer { flex-direction: row; }
+  #toolbar {
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+  }
+  #toolbar .btn { width: 100%; }
+}
+
+@media (orientation: portrait) {
+  #appContainer { flex-direction: column; }
+  #toolbar {
+    flex-direction: row;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
 }
