@@ -86,7 +86,7 @@ input[type=number] {
 
 @media (min-aspect-ratio: 6/5) {
     /* Wide screens: vertical toolbar */
-    body {
+    #toolbar {
         background-color: blue;
     }
 
@@ -129,7 +129,7 @@ input[type=number] {
 
 @media (max-aspect-ratio: 6/5) {
     /* Tall screens: horizontal toolbar */
-    body {
+    #toolbar {
     background-color: red;
     }
 
@@ -173,7 +173,7 @@ input[type=number] {
 
 /* Fallback for Android WebView when aspect-ratio MQ is wrong */
 @media (orientation: landscape) {
-    body {
+    #toolbar {
   background-color: green;
 }
 
@@ -187,7 +187,7 @@ input[type=number] {
 }
 
 @media (orientation: portrait) {
-    body {
+    #toolbar {
   background-color: yellow;
 }
 
