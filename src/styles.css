@@ -86,6 +86,10 @@ input[type=number] {
 
 @media (min-aspect-ratio: 6/5) {
     /* Wide screens: vertical toolbar */
+    body {
+        background-color: blue;
+    }
+
     #appContainer {
     flex-direction: row;
     }
@@ -125,6 +129,10 @@ input[type=number] {
 
 @media (max-aspect-ratio: 6/5) {
     /* Tall screens: horizontal toolbar */
+    body {
+    background-color: red;
+    }
+
     #appContainer {
     flex-direction: column;
     }
@@ -165,6 +173,10 @@ input[type=number] {
 
 /* Fallback for Android WebView when aspect-ratio MQ is wrong */
 @media (orientation: landscape) {
+    body {
+  background-color: green;
+}
+
   #appContainer { flex-direction: row; }
   #toolbar {
     flex-direction: column;
@@ -175,6 +187,10 @@ input[type=number] {
 }
 
 @media (orientation: portrait) {
+    body {
+  background-color: yellow;
+}
+
   #appContainer { flex-direction: column; }
   #toolbar {
     flex-direction: row;
