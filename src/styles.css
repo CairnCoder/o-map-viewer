@@ -156,5 +156,3 @@ input[type=number] {
     flex: none;
     }
 }
-
-body[data-js="ok"] #toolbar { outline: 3px solid red; }
