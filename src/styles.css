@@ -30,6 +30,13 @@ html, body {
   border-bottom: 1px solid #ccc;
 }
 
+.btn-group .btn-clear {
+  flex: 0 0 2.25rem;   /* no grow, no shrink, fixed basis */
+  width: 2.25rem;      /* optional but fine */
+  padding-left: 0;
+  padding-right: 0;
+}
+
 
 #map {
   position: absolute;

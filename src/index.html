@@ -22,32 +22,40 @@
     <div id="toolbar" class="shadow">
       <input type="file" id="imageImporter" accept="image/*" style="display: none;">
       <button id="importImageBtn" class="btn btn-sm btn-warning">
-        <i class="bi bi-import me-1"></i> Import
+        <i class="bi bi-upload me-1"></i> Import
       </button>
 
-      <div class="btn-group btn-group-sm align-items-stretch flex-nowrap" role="group" aria-label="Threshold and Color Tools">
+      <div class="btn-group btn-group-sm" role="group" aria-label="Threshold and Color Tools">
         <div class="btn p-0 border border-dark">
           <input type="number" id="threshold" class="form-control form-control-sm border-0" value="30" min="0" max="442" placeholder="###">
         </div>
-        <button id="pickColorBtn" class="btn btn-secondary">
+        <button id="pickColorBtn" class="btn btn-secondary btn-clear">
           <i class="bi bi-eyedropper"></i>
         </button>
-        <button id="resetImageBtn" class="btn btn-danger btn-square">
+        <button id="resetImageBtn" class="btn btn-danger btn-clear">
           <i class="bi bi-arrow-counterclockwise"></i>
         </button>
       </div>
 
       <div id="measure-group" class="btn-group btn-group-sm" role="group" aria-label="Measure tools">
-        <button id="measure-btn" class="btn btn-secondary"><i class="bi bi-rulers me-1"></i> Measure</button>
-        <button id="clear-btn" class="btn btn-danger btn-square"><i class="bi bi-trash"></i></button>
+        <button id="measure-btn" class="btn btn-secondary">
+          <i class="bi bi-rulers me-1"></i>Measure
+        </button>
+        <button id="clear-btn" class="btn btn-danger btn-clear">
+          <i class="bi bi-trash"></i>
+        </button>
       </div>
 
       <div class="btn-group btn-group-sm" role="group" aria-label="Draw leg tools">
-        <button id="drawLegBtn" class="btn btn-secondary"><span style="display: inline-block; transform: rotate(-45deg); margin-right: 0.3em;">⚯</span> Draw</button>
-        <button id="clearLegBtn" class="btn btn-danger btn-square"><i class="bi bi-trash"></i></button>
+        <button id="drawLegBtn" class="btn btn-secondary">
+          <span class="me-1" style="transform: rotate(-45deg);">⚯</span>Draw
+        </button>
+        <button id="clearLegBtn" class="btn btn-danger btn-clear">
+          <i class="bi bi-trash"></i>
+        </button>
       </div>
 
-      <input type="color" id="backgroundColorPicker" style="display: none;"> 
+      <input type="color" id="backgroundColorPicker" style="display: none;">
       <button id="pickBackgroundBtn" class="btn btn-sm btn-secondary">
         <i class="bi bi-palette me-1"></i> Background
       </button>
@@ -179,7 +187,7 @@
       </div>
     </div>
   </div>
-  
+
 
   <script src="script.js"></script>
 </body>
