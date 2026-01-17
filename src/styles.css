@@ -30,14 +30,6 @@ html, body {
   border-bottom: 1px solid #ccc;
 }
 
-/* Ensure Bootstrap modals sit above OpenLayers + your fixed container */
-.modal-backdrop {
-  z-index: 2000 !important;
-}
-
-.modal {
-  z-index: 2005 !important;
-}
 
 #map {
   position: absolute;

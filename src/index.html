@@ -11,8 +11,9 @@
   <link rel="stylesheet" href="vendor/bootstrap-icons/1.10.5/bootstrap-icons.css">
   <link rel="stylesheet" href="styles.css">
 
-  <!-- Todo: make the red buttons of the toolbar a consistent width. -->
-
+  <!-- Todo: Make the red buttons of the toolbar a consistent width. -->
+  <!-- Todo: Update credits. -->
+  <!-- Todo: Update help. -->
 
 
 </head>
@@ -76,109 +77,109 @@
     </div>
 
     <div id="map"></div>
-
-    <div class="modal fade" id="creditsModal" tabindex="-1" aria-labelledby="creditsModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="creditsModalLabel">Credits</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <p><strong>O-Map Viewer</strong></p>
-            <p>Built with:</p>
-            <ul>
-              <li>
-                <a href="https://openlayers.org/" target="_blank" rel="noopener noreferrer">OpenLayers</a> —
-                An open-source JavaScript library used for interactive map rendering and spatial tools, licensed under the BSD 2-Clause License.
-                <br>
-                <small>
-                  This application uses OpenLayers for its mapping functionality without external map tile services, so no additional data attribution is required.
-                  License details available <a href="https://github.com/openlayers/openlayers/blob/main/LICENSE.md" target="_blank" rel="noopener noreferrer">here</a>.
-                </small>
-              </li>
-
-              <li>
-                <a href="https://getbootstrap.com/" target="_blank" rel="noopener noreferrer">Bootstrap 5</a> —
-                Front-end framework released under the MIT License.
-                <br>
-                <small>
-                  License information available <a href="https://github.com/twbs/bootstrap/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">here</a>.
-                </small>
-              </li>
-              <li>JavaScript Canvas API</li>
-              <li>ChatGPT 4 (4o)</li>
-            </ul>
-
-            <p>
-              Developed by Matthew Gooch.<br>
-              <i>Copyright © Matthew Gooch.</i>
-            </p>
-
-            <p>
-              This is a project I (Matthew Gooch) envisioned in 2018. However, it is only now, in 2025, with the advent of accelerated programming using ChatGPT, that it has been realised.
-              Prior to these AI tools, I had developed a version that was acceptable but only suited for Windows devices as a desktop program.
-              Now, it is available online. My previous attempts probably totalled 300–400 hours of work, but with the aid of ChatGPT and newer versions of OpenLayers, this latest version was completed in just 20 hours.
+  </div>
+  <div class="modal fade" id="creditsModal" tabindex="-1" aria-labelledby="creditsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="creditsModalLabel">Credits</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>O-Map Viewer</strong></p>
+          <p>Built with:</p>
+          <ul>
+            <li>
+              <a href="https://openlayers.org/" target="_blank" rel="noopener noreferrer">OpenLayers</a> —
+              An open-source JavaScript library used for interactive map rendering and spatial tools, licensed under the BSD 2-Clause License.
               <br>
-              The key features I wanted to combine were the colour-picking tools from GIMP, the ability to use touchscreen interactions to zoom, pan, and rotate the map,
-              and finally to set up basic leg-viewing capabilities with distance measurements. The result is a simple piece of software that can be used to geek maps ahead of races.
+              <small>
+                This application uses OpenLayers for its mapping functionality without external map tile services, so no additional data attribution is required.
+                License details available <a href="https://github.com/openlayers/openlayers/blob/main/LICENSE.md" target="_blank" rel="noopener noreferrer">here</a>.
+              </small>
+            </li>
+
+            <li>
+              <a href="https://getbootstrap.com/" target="_blank" rel="noopener noreferrer">Bootstrap 5</a> —
+              Front-end framework released under the MIT License.
               <br>
-              This is a work in progress. Known issues are listed <a href="/issues.html">here</a>.<br>
-              If there are any problems or suggestions, please let me know.
-            </p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
+              <small>
+                License information available <a href="https://github.com/twbs/bootstrap/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">here</a>.
+              </small>
+            </li>
+            <li>JavaScript Canvas API</li>
+            <li>ChatGPT 4 (4o)</li>
+          </ul>
 
+          <p>
+            Developed by Matthew Gooch.<br>
+            <i>Copyright © Matthew Gooch.</i>
+          </p>
 
-    <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="helpModalLabel">Help & Instructions</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <p><strong>How to use the Map Viewer:</strong></p>
-            <ul>
-              <li><strong>Upload Image</strong>: Choose an image to display on the map.</li>
-              <li><strong>Pick Color</strong>: Click on the image to select a color to preserve (others will become transparent).</li>
-              <li><strong>Threshold</strong>: Adjust tolerance for color similarity.</li>
-              <li><strong>Pick Background</strong>: Change the map background color.</li>
-              <li><strong>Zoom/Rotate</strong>: Use buttons to zoom or rotate the view.</li>
-              <li><strong>Reset View</strong>: Resets the map to fit the image and zero rotation.</li>
-            </ul>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
+          <p>
+            This is a project I (Matthew Gooch) envisioned in 2018. However, it is only now, in 2025, with the advent of accelerated programming using ChatGPT, that it has been realised.
+            Prior to these AI tools, I had developed a version that was acceptable but only suited for Windows devices as a desktop program.
+            Now, it is available online. My previous attempts probably totalled 300–400 hours of work, but with the aid of ChatGPT and newer versions of OpenLayers, this latest version was completed in just 20 hours.
+            <br>
+            The key features I wanted to combine were the colour-picking tools from GIMP, the ability to use touchscreen interactions to zoom, pan, and rotate the map,
+            and finally to set up basic leg-viewing capabilities with distance measurements. The result is a simple piece of software that can be used to geek maps ahead of races.
+            <br>
+            This is a work in progress. Known issues are listed <a href="/issues.html">here</a>.<br>
+            If there are any problems or suggestions, please let me know.
+          </p>
         </div>
-      </div>
-    </div>
-
-    <div class="position-fixed bottom-0 end-0 p-1" style="z-index: 1100">
-      <div id="infoToastPickColour" class="toast align-items-center text-bg-dark border-0 m-1" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-          <div class="toast-body">
-            Click on the image to isolate a colour.
-          </div>
-          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-      </div>
-      <div id="infoToastStarterHelp" class="toast align-items-center text-bg-dark border-0 m-1" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-          <div class="toast-body">
-            To start, click upload and select a map image.
-          </div>
-          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
   </div>
+
+
+  <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="helpModalLabel">Help & Instructions</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>How to use the Map Viewer:</strong></p>
+          <ul>
+            <li><strong>Upload Image</strong>: Choose an image to display on the map.</li>
+            <li><strong>Pick Color</strong>: Click on the image to select a color to preserve (others will become transparent).</li>
+            <li><strong>Threshold</strong>: Adjust tolerance for color similarity.</li>
+            <li><strong>Pick Background</strong>: Change the map background color.</li>
+            <li><strong>Zoom/Rotate</strong>: Use buttons to zoom or rotate the view.</li>
+            <li><strong>Reset View</strong>: Resets the map to fit the image and zero rotation.</li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="position-fixed bottom-0 end-0 p-1" style="z-index: 1100">
+    <div id="infoToastPickColour" class="toast align-items-center text-bg-dark border-0 m-1" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body">
+          Click on the image to isolate a colour.
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+    <div id="infoToastStarterHelp" class="toast align-items-center text-bg-dark border-0 m-1" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body">
+          To start, click upload and select a map image.
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+  
 
   <script src="script.js"></script>
 </body>
