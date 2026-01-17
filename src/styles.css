@@ -32,9 +32,14 @@ body {
 }
 
 #map {
-    flex: 1 1 auto;/*------------*/
-    min-height: 0;
+    position: relative;   /* helps some libs */
+    height: 100%;         /* now works because #appContainer has definite height */
     background-color: #ffffff;
+}
+
+#map > * {
+  width: 100% !important;
+  height: 100% !important;
 }
 
 #toolbar .btn {
