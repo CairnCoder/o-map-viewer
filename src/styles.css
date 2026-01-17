@@ -46,7 +46,7 @@ html, body {
 @media (min-width: 768px) {
   #toolbar {
     top: 0; bottom: 0; left: 0; right: auto;
-    width: 130px;        /* choose your toolbar width */
+    width: 150px;        /* choose your toolbar width */
     height: auto;
     flex-direction: column;
     overflow-y: auto;

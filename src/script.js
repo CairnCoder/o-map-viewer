@@ -198,40 +198,96 @@ let map = new ol.Map({
 
 
     // Handle Full screen button
-    document.getElementById('fullscreenToggle').addEventListener('click', () => {
-      const container = document.getElementById('appContainer');
+    function getFullscreenElement(doc = document) {
+      return doc.fullscreenElement
+          || doc.webkitFullscreenElement
+          || doc.mozFullScreenElement
+          || doc.msFullscreenElement
+          || null;
+    }
 
-      const isFullscreen = document.fullscreenElement ||
-                          document.webkitFullscreenElement ||
-                          document.mozFullScreenElement ||
-                          document.msFullscreenElement;
+    async function requestFullscreen(el) {
+      const fn =
+        el.requestFullscreen ||
+        el.webkitRequestFullscreen ||
+        el.mozRequestFullScreen ||
+        el.msRequestFullscreen;
 
-      if (!isFullscreen) {
-        if (container.requestFullscreen) {
-          container.requestFullscreen();
-        } else if (container.webkitRequestFullscreen) {
-          container.webkitRequestFullscreen();
-        } else if (container.mozRequestFullScreen) {
-          container.mozRequestFullScreen();
-        } else if (container.msRequestFullscreen) {
-          container.msRequestFullscreen();
+      if (!fn) throw new Error("Fullscreen API not supported");
+
+      // Some prefixed methods don't return a promise; normalize.
+      const ret = fn.call(el);
+      if (ret && typeof ret.then === "function") await ret;
+    }
+
+    async function exitFullscreen(doc = document) {
+      const fn =
+        doc.exitFullscreen ||
+        doc.webkitExitFullscreen ||
+        doc.mozCancelFullScreen ||
+        doc.msExitFullscreen;
+
+      if (!fn) throw new Error("Exit fullscreen not supported");
+
+      const ret = fn.call(doc);
+      if (ret && typeof ret.then === "function") await ret;
+    }
+
+    document.getElementById("fullscreenToggle").addEventListener("click", async () => {
+      const el = document.getElementById("appContainer");
+
+      try {
+        if (!getFullscreenElement()) {
+          await requestFullscreen(el);
         } else {
-          console.warn("Fullscreen API is not supported.");
+          await exitFullscreen();
         }
-      } else {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) {
-          document.webkitExitFullscreen();
-        } else if (document.mozCancelFullScreen) {
-          document.mozCancelFullScreen();
-        } else if (document.msExitFullscreen) {
-          document.msExitFullscreen();
-        } else {
-          console.warn("Exit fullscreen is not supported.");
-        }
+      } catch (e) {
+        // Useful during dev; you can downgrade to a console.warn in production.
+        console.warn("Fullscreen toggle failed:", e);
       }
     });
+
+    // Optional: keep button state in sync across browsers
+    ["fullscreenchange", "webkitfullscreenchange", "mozfullscreenchange", "MSFullscreenChange"]
+      .forEach(evt => document.addEventListener(evt, () => {
+        const fs = !!getFullscreenElement();
+        // update UI based on fs
+      }));
+    // document.getElementById('fullscreenToggle').addEventListener('click', () => {
+    //   const container = document.getElementById('appContainer');
+
+    //   const isFullscreen = document.fullscreenElement ||
+    //                       document.webkitFullscreenElement ||
+    //                       document.mozFullScreenElement ||
+    //                       document.msFullscreenElement;
+
+    //   if (!isFullscreen) {
+    //     if (container.requestFullscreen) {
+    //       container.requestFullscreen();
+    //     } else if (container.webkitRequestFullscreen) {
+    //       container.webkitRequestFullscreen();
+    //     } else if (container.mozRequestFullScreen) {
+    //       container.mozRequestFullScreen();
+    //     } else if (container.msRequestFullscreen) {
+    //       container.msRequestFullscreen();
+    //     } else {
+    //       console.warn("Fullscreen API is not supported.");
+    //     }
+    //   } else {
+    //     if (document.exitFullscreen) {
+    //       document.exitFullscreen();
+    //     } else if (document.webkitExitFullscreen) {
+    //       document.webkitExitFullscreen();
+    //     } else if (document.mozCancelFullScreen) {
+    //       document.mozCancelFullScreen();
+    //     } else if (document.msExitFullscreen) {
+    //       document.msExitFullscreen();
+    //     } else {
+    //       console.warn("Exit fullscreen is not supported.");
+    //     }
+    //   }
+    // });
     //The following is a better version. TODO: replace above with bellow.
     // document.getElementById('fullscreenToggle').addEventListener('click', async () => {
     //   const el = document.getElementById('appContainer');
