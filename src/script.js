@@ -34,7 +34,7 @@ let map = new ol.Map({
 
 
 
-    document.getElementById('imageUploader').addEventListener('change', function (e) {
+    document.getElementById('imageAdder').addEventListener('change', function (e) {
       const file = e.target.files[0];
       if (!file) return;
       const img = new Image();
@@ -321,8 +321,8 @@ let map = new ol.Map({
 
 
     // Handle choose file button
-    document.getElementById('uploadImageBtn').addEventListener('click', () => {
-      document.getElementById('imageUploader').click();
+    document.getElementById('addImageBtn').addEventListener('click', () => {
+      document.getElementById('imageAdder').click();
     });
 
 
