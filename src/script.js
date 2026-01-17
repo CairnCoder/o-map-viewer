@@ -232,6 +232,16 @@ let map = new ol.Map({
         }
       }
     });
+    //The following is a better version. TODO: replace above with bellow.
+    // document.getElementById('fullscreenToggle').addEventListener('click', async () => {
+    //   const el = document.getElementById('appContainer');
+    //   if (!document.fullscreenElement) {
+    //     try { await el.requestFullscreen(); } catch (e) {}
+    //   } else {
+    //     try { await document.exitFullscreen(); } catch (e) {}
+    //   }
+    // });
+
 
 
 
