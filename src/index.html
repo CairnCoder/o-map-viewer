@@ -93,47 +93,78 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p><strong>O-Map Viewer</strong></p>
-          <p>Built with:</p>
+
+          <h5>O-Map Viewer</h5>
+
+          <hr>
+
+          <p><strong>Built with:</strong></p>
           <ul>
             <li>
-              <a href="https://openlayers.org/" target="_blank" rel="noopener noreferrer">OpenLayers</a> —
-              An open-source JavaScript library used for interactive map rendering and spatial tools, licensed under the BSD 2-Clause License.
-              <br>
+              <a href="https://openlayers.org/" target="_blank" rel="noopener noreferrer">OpenLayers</a><br>
               <small>
-                This application uses OpenLayers for its mapping functionality without external map tile services, so no additional data attribution is required.
-                License details available <a href="https://github.com/openlayers/openlayers/blob/main/LICENSE.md" target="_blank" rel="noopener noreferrer">here</a>.
+                Open-source JavaScript library for interactive map rendering and spatial tools (BSD 2-Clause License).
+                This application uses OpenLayers without external map tile services; therefore, no additional data attribution is required.
+                License details available
+                <a href="https://github.com/openlayers/openlayers/blob/main/LICENSE.md" target="_blank" rel="noopener noreferrer">here</a>.
               </small>
             </li>
-
             <li>
-              <a href="https://getbootstrap.com/" target="_blank" rel="noopener noreferrer">Bootstrap 5</a> —
-              Front-end framework released under the MIT License.
-              <br>
+              <a href="https://getbootstrap.com/" target="_blank" rel="noopener noreferrer">Bootstrap 5</a><br>
               <small>
-                License information available <a href="https://github.com/twbs/bootstrap/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">here</a>.
+                Front-end framework released under the MIT License.
+                License information available
+                <a href="https://github.com/twbs/bootstrap/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">here</a>.
               </small>
             </li>
-            <li>JavaScript Canvas API</li>
-            <li>ChatGPT 4 (4o)</li>
+            <li>
+              <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">ChatGPT 4 & 5</a>
+            </li>
           </ul>
 
+          <hr>
+
+          <p><strong>Description</strong></p>
+
           <p>
-            Developed by Matthew Gooch.<br>
-            <i>Copyright © Matthew Gooch.</i>
+            This project was originally envisioned by Matthew Gooch in 2018.
+            It was completed in 2025 following the availability of accelerated development workflows using ChatGPT and updated versions of OpenLayers.
+            An earlier implementation existed as a Windows-only desktop application.
           </p>
 
           <p>
-            This is a project I (Matthew Gooch) envisioned in 2018. However, it is only now, in 2025, with the advent of accelerated programming using ChatGPT, that it has been realised.
-            Prior to these AI tools, I had developed a version that was acceptable but only suited for Windows devices as a desktop program.
-            Now, it is available online. My previous attempts probably totalled 300–400 hours of work, but with the aid of ChatGPT and newer versions of OpenLayers, this latest version was completed in just 20 hours.
-            <br>
-            The key features I wanted to combine were the colour-picking tools from GIMP, the ability to use touchscreen interactions to zoom, pan, and rotate the map,
-            and finally to set up basic leg-viewing capabilities with distance measurements. The result is a simple piece of software that can be used to geek maps ahead of races.
-            <br>
-            This is a work in progress. Known issues are listed <a href="/issues.html">here</a>.<br>
-            If there are any problems or suggestions, please let me know.
+            Previous development efforts are estimated at 300–400 hours.
+            The current web-based version was completed in approximately 20 hours, with an additional 5 hours of later refinements.
           </p>
+
+          <p>
+            The core goals of the project were to combine colour-picking tools similar to those found in GIMP,
+            touchscreen-friendly zoom, pan, and rotation interactions, and basic leg-viewing with distance measurement.
+            The result is a lightweight tool for studying maps ahead of races.
+          </p>
+
+          <hr>
+
+          <p><strong>Status</strong></p>
+
+          <p>
+            This software is a work in progress.
+            Known issues are listed <a href="issues.html">here</a>.
+            Feedback, bug reports, and suggestions are welcome.
+          </p>
+
+          <hr>
+
+          <p><strong>License:</strong></p>
+
+          <p>
+            Developed by: Matthew Gooch<br>
+            <em>Copyright © Matthew Gooch</em>
+          </p>
+          <p>
+            All rights reserved. This code is not licensed for reuse.
+          </p>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -153,12 +184,16 @@
         <div class="modal-body">
           <p><strong>How to use the Map Viewer:</strong></p>
           <ul>
-            <li><strong>Import</strong>: Choose an image to display on the map.</li>
-            <li><strong>Pick Color</strong>: Click on the image to select a color to preserve (others will become transparent).</li>
-            <li><strong>Threshold</strong>: Adjust tolerance for color similarity.</li>
-            <li><strong>Pick Background</strong>: Change the map background color.</li>
-            <li><strong>Zoom/Rotate</strong>: Use buttons to zoom or rotate the view.</li>
-            <li><strong>Reset View</strong>: Resets the map to fit the image and zero rotation.</li>
+            <li><strong>Import</strong>: Click to choose an image to display</li>
+            <li><strong>Colour picker</strong>: Adjust threshold for color similarity | Click the "colour picker" then the map to isolate a particular colour | Reset</li>
+            <li><strong>Measure</strong>: Click "Measure" and then the map repeatedly to measure distances | Clear measure lines</li>
+            <li><strong>Draw</strong>: Click "Draw" and then the map twice to draw a leg | Clear leg</li>
+            <li><strong>Background</strong>: Click to change background color</li>
+            <li><strong>Zoom/Rotate</strong>: Use buttons to zoom or rotate the view</li>
+            <li><strong>Reset View</strong>: Resets the map to fit the image and zero rotation</li>
+            <li><strong>Fullscreen</strong>: Use to enter full screen mode</li>
+            <br>
+            <li><strong>Touch interaction</strong>: When using a touch screen device, touch interactions are available (pan/rotate/zoom)</li>
           </ul>
         </div>
         <div class="modal-footer">
