@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>O-Map Viewer</title>
+  <title>Omap Viewer</title>
+
+  <!------------- Dependencies ------------->
+  <!-- Copied to local folder to remove external server dependency. -->
   <script src="vendor/ol/10.6.0/ol.js"></script>
   <link rel="stylesheet" href="vendor/ol/10.6.0/ol.css">
   <link rel="stylesheet" href="vendor/bootstrap/5.3.3/bootstrap.min.css">
@@ -11,19 +14,20 @@
   <link rel="stylesheet" href="vendor/bootstrap-icons/1.10.5/bootstrap-icons.css">
   <link rel="stylesheet" href="styles.css">
 
-  <!-- Todo: Update credits. -->
-  <!-- Todo: Update help. -->
-
-
 </head>
 <body>
   <div id="appContainer">
+
+    <!------------- Tool bar ------------->
     <div id="toolbar" class="shadow">
+
+      <!-- Import image button -->
       <input type="file" id="imageImporter" accept="image/*" style="display: none;">
       <button id="importImageBtn" class="btn btn-sm btn-warning">
         <i class="bi bi-upload me-1"></i> Import
       </button>
 
+      <!-- Colour picker tool collection -->
       <div class="btn-group btn-group-sm" role="group" aria-label="Threshold and Color Tools">
         <div class="btn p-0 border border-dark">
           <input type="number" id="threshold" class="form-control form-control-sm border-0" value="30" min="0" max="442" placeholder="###">
@@ -36,6 +40,7 @@
         </button>
       </div>
 
+      <!-- Measure lengths tool collection -->
       <div id="measure-group" class="btn-group btn-group-sm" role="group" aria-label="Measure tools">
         <button id="measure-btn" class="btn btn-secondary">
           <i class="bi bi-rulers me-1"></i>Measure
@@ -45,6 +50,7 @@
         </button>
       </div>
 
+      <!-- Draw orienteering leg tool collection -->
       <div class="btn-group btn-group-sm" role="group" aria-label="Draw leg tools">
         <button id="drawLegBtn" class="btn btn-secondary">
           <span class="me-1" style="transform: rotate(-45deg);">⚯</span>Draw
@@ -54,37 +60,55 @@
         </button>
       </div>
 
+      <!-- Background colour selector button -->
       <input type="color" id="backgroundColorPicker" style="display: none;">
       <button id="pickBackgroundBtn" class="btn btn-sm btn-secondary">
         <i class="bi bi-palette me-1"></i> Background
       </button>
 
+      <!-- Image zoom buttons -->
       <div class="btn-group btn-group-sm" role="group" aria-label="Zoom controls">
         <button id="zoomInBtn" class="btn btn-success">+</button>
         <button id="zoomOutBtn" class="btn btn-success">−</button>
       </div>
 
+      <!-- Image rotate buttons -->
       <div class="btn-group btn-group-sm" role="group" aria-label="Rotate controls">
         <button id="rotateLeftBtn" class="btn btn-success">↶</button>
         <button id="rotateRightBtn" class="btn btn-success">↷</button>
       </div>
 
+      <!-- Image reset view button -->
       <button id="resetViewBtn" class="btn btn-sm btn-success">
         <i class="bi bi-arrow-counterclockwise me-1"></i> View
       </button>
 
+      <!-- Full screen toggle -->
       <button id="fullscreenToggle" class="btn btn-success">⛶ Fullscreen</button>
 
+      <!-- Help button -->
       <button id="helpBtn" class="btn btn-info">
         <i class="bi bi-question-circle me-1"></i> Help
       </button>
 
+      <!-- Credits button -->
       <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#creditsModal">© Credits</button>
 
     </div>
 
+
+    <!------------- Main map ------------->
     <div id="map"></div>
+
   </div>
+
+
+
+
+
+  <!------------- Popup dialogs (hidden until viewed) ------------->
+
+  <!-- Credits dialog -->
   <div class="modal fade" id="creditsModal" tabindex="-1" aria-labelledby="creditsModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -173,7 +197,7 @@
     </div>
   </div>
 
-
+  <!-- Help dialog -->
   <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -203,6 +227,7 @@
     </div>
   </div>
 
+  <!-- Initial help dialog -->
   <div class="position-fixed bottom-0 end-0 p-1" style="z-index: 1100">
     <div id="infoToastPickColour" class="toast align-items-center text-bg-dark border-0 m-1" role="alert" aria-live="assertive" aria-atomic="true">
       <div class="d-flex">
@@ -223,6 +248,10 @@
   </div>
 
 
+
+  <!-- After page load, run java script. -->
   <script src="script.js"></script>
+
+
 </body>
 </html>
