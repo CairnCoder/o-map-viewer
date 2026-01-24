@@ -294,6 +294,36 @@ document.getElementById('backgroundColorPicker').addEventListener('input', (e) =
 
 
 
+//---------------- Rotation buttons ----------------
+
+// Event listener: Rotate left button
+document.getElementById('rotateLeftBtn').addEventListener('click', () => {
+  const view = map.getView();
+  view.setRotation(view.getRotation() - (Math.PI / 12)); // rotate 22.5° counterclockwise
+});
+// Event listener: Rotate right button
+document.getElementById('rotateRightBtn').addEventListener('click', () => {
+  const view = map.getView();
+  view.setRotation(view.getRotation() + (Math.PI / 12)); // rotate 22.5° clockwise
+});
+
+
+
+//---------------- Zoom buttons ----------------
+
+// Event listener: Zoom in button
+document.getElementById('zoomInBtn').addEventListener('click', () => {
+  const view = map.getView();
+  view.setZoom(view.getZoom() + 1);
+});
+// Event listener: Zoom out button
+document.getElementById('zoomOutBtn').addEventListener('click', () => {
+  const view = map.getView();
+  view.setZoom(view.getZoom() - 1);
+});
+
+
+
 //---------------- Reset view (position, rotation, zoom) ----------------
 
 // Event listener: Reset image/map view (position, rotation, zoom)
@@ -307,20 +337,6 @@ document.getElementById('resetViewBtn').addEventListener('click', () => {
   }, () => {
     view.fit(masterImageExtent, { duration: 300 });
   });
-});
-
-
-
-//---------------- Zoom buttons ----------------
-
-// Event listener: Zoom buttons
-document.getElementById('zoomInBtn').addEventListener('click', () => {
-  const view = map.getView();
-  view.setZoom(view.getZoom() + 1);
-});
-document.getElementById('zoomOutBtn').addEventListener('click', () => {
-  const view = map.getView();
-  view.setZoom(view.getZoom() - 1);
 });
 
 
@@ -400,21 +416,7 @@ document.getElementById("fullscreenToggle").addEventListener("click", async () =
 
 
 
-
-
-
-// Event listener: Rotate left button
-document.getElementById('rotateLeftBtn').addEventListener('click', () => {
-  const view = map.getView();
-  view.setRotation(view.getRotation() - (Math.PI / 12)); // rotate 22.5° counterclockwise
-});
-
-// Event listener: Rotate right button
-document.getElementById('rotateRightBtn').addEventListener('click', () => {
-  const view = map.getView();
-  view.setRotation(view.getRotation() + (Math.PI / 12)); // rotate 22.5° clockwise
-});
-
+//---------------- Zoom buttons ----------------
 
 // Event listener: Help button
 document.getElementById('helpBtn').addEventListener('click', () => {
