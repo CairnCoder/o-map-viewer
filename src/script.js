@@ -1,5 +1,8 @@
 //---------------- Comments ----------------
-// Mostly ok. Items still needing to be refactored are: draw leg and measure distance. Everything also need to have suitable comments added. 
+// Mostly ok.
+// Items still needing to be refactored are: draw leg and measure distance.
+// Some comments need to be added.
+// A distance ratio tool needs to be added.
 
 
 
