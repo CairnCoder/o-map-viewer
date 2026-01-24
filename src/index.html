@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="vendor/bootstrap/5.3.3/bootstrap.min.css">
   <script src="vendor/bootstrap/5.3.3/bootstrap.bundle.min.js"></script>
   <link rel="stylesheet" href="vendor/bootstrap-icons/1.10.5/bootstrap-icons.css">
+
   <link rel="stylesheet" href="styles.css">
 
 </head>
@@ -22,10 +23,10 @@
     <div id="toolbar" class="shadow">
 
       <!-- Import image button -->
-      <input type="file" id="imageImporter" accept="image/*" style="display: none;">
-      <button id="importImageBtn" class="btn btn-sm btn-warning">
+      <label class="btn btn-sm btn-warning">
         <i class="bi bi-upload me-1"></i> Import
-      </button>
+        <input type="file" id="imageImporter" accept="image/*" hidden>
+      </label>
 
       <!-- Colour picker tool collection -->
       <div class="btn-group btn-group-sm" role="group" aria-label="Threshold and Color Tools">
@@ -61,10 +62,10 @@
       </div>
 
       <!-- Background colour selector button -->
-      <input type="color" id="backgroundColorPicker" style="display: none;">
-      <button id="pickBackgroundBtn" class="btn btn-sm btn-secondary">
+      <label class="btn btn-sm btn-secondary">
         <i class="bi bi-palette me-1"></i> Background
-      </button>
+        <input type="color" id="backgroundColorPicker" hidden>
+      </label>
 
       <!-- Image zoom buttons -->
       <div class="btn-group btn-group-sm" role="group" aria-label="Zoom controls">

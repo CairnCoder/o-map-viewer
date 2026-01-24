@@ -269,12 +269,7 @@ document.getElementById('resetImageBtn').addEventListener('click', () => {
 
 //---------------- Background colour picker ----------------
 
-// Event listener: Background colour picker event redirect
-document.getElementById('pickBackgroundBtn').addEventListener('click', () => {
-    document.getElementById('backgroundColorPicker').click();
-});
-
-// Event listener: Set image/map background colour
+// Event listener: Set background colour
 document.getElementById('backgroundColorPicker').addEventListener('input', (e) => {
     const hex = e.target.value;
     document.getElementById('map').style.backgroundColor = hex;
