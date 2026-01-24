@@ -8,35 +8,26 @@
 
 
 
+// ---------------- High level overview of the java script bellow ----------------
 
-// Create image/map canvas
-let map = new ol.Map({
-  target: 'map',
-  controls: [],
-  layers: [],
-  view: new ol.View({ center: [0, 0], zoom: 2 }),
-  interactions: ol.interaction.defaults.defaults({
-    pinchRotate: false, // disable default action and replace with bellow
-  }).extend([
-    new ol.interaction.PinchRotate({
-      threshold: 0, // remove threshold/buffer before rotation begins
-    })
-  ]),
-});
+// First there is the image/map display framework.
+// Then there are button event listeners that activate actions on the image/map display framework, sometimes aided by further framework.
+
+// 
+
+// Colour filter/picker:
+// Using the colour of the pixel selected by the user and the threshold in the tool bar, make all pixels whose colour is outside the region of colour space transparent.
+// This filtering is applied to the rendered image.
+// To reset the colours, it replaces the rendered image with a backup image stored in a global variable.
 
 
-// Ensure correct sizing with flex layout, after page load.
-setTimeout(() => map.updateSize(), 100); 
 
 
-// Global page variables
-let imageLayer = null;
-let originalImage = null;
-let imageExtent = null;
-let imgCanvas = document.createElement('canvas');
-let imgCtx = imgCanvas.getContext('2d');
-let pickingColor = false;
 
+
+
+
+// ---------------- General tools ----------------
 
 /**
  * Alters visual appearance of the given toggle button when toggled. 
@@ -55,18 +46,69 @@ function toggleButtonAppearance(buttonId, boolVariable) {
 }
 
 
-// When image is selected, add to global variable (originalImage) and render it on the image/map canvas. Else do nothing.
+
+
+
+// ---------------- Core image/map display framework ----------------
+
+
+
+
+// Create image/map canvas
+let map = new ol.Map({
+  target: 'map',
+  controls: [],
+  layers: [],
+  view: new ol.View({ center: [0, 0], zoom: 2 }),
+  interactions: ol.interaction.defaults.defaults({
+    pinchRotate: false, // disable default action and replace with bellow
+  }).extend([
+    new ol.interaction.PinchRotate({
+      threshold: 0, // remove threshold/buffer before rotation begins
+    })
+  ]),
+});
+
+// Global page variables
+//let imageLayer = null;
+let originalImage = null;
+let imageExtent = null;
+let imgCanvas = document.createElement('canvas');
+let imgCtx = imgCanvas.getContext('2d');
+let pickingColor = false;
+let imageLayer = new ol.layer.Image();
+map.addLayer(imageLayer);
+
+// Create image framework, load image from source, and initialise. Note, adding a file to img.src is an asynchronouse action, thus initialision must also be done asynchronously. 
+const img = new Image();
+img.onload = function () {
+  // Copy image into global variable - For restoration after colour filtering.
+  originalImage = img;
+
+  // Render image on canvas.
+  imageExtent = [0, 0, img.width, img.height];
+  restoreImage();
+  updateLayer();
+  //updateLayer(imgCanvas);
+
+  // Reset view state
+  map.getView().fit(imageExtent);
+};
+
+
+// Ensure correct sizing with flex layout, after page load.
+setTimeout(() => map.updateSize(), 100); 
+
+
+
+// When image is selected, add image to framework source.
 document.getElementById('imageImporter').addEventListener('change', function (e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const img = new Image();
-  img.onload = function () {
-    originalImage = img;
-    drawOriginalImage();
-    imageExtent = [0, 0, img.width, img.height];
-    updateLayer();
-  };
-  img.src = URL.createObjectURL(file);
+  // If a file has been selected, set as img source. Then automatically executes img.onload .
+  if (!e.target.files[0]) {
+    console.error("No image selected.");
+    return;
+  }
+  img.src = URL.createObjectURL(e.target.files[0]);
 });
 
 
@@ -75,39 +117,31 @@ document.getElementById('imageImporter').addEventListener('change', function (e)
  *
  * @returns {void}
  */
-function drawOriginalImage() {
-  if (!originalImage) return;
+function restoreImage() {
+  if (!originalImage){
+    console.error("No original image.");
+    return;
+  }
+  imgCanvas = document.createElement('canvas');
+  imgCtx = imgCanvas.getContext('2d');
+
+  // Match the canvas size to the image (clears canvas)
   imgCanvas.width = originalImage.width;
   imgCanvas.height = originalImage.height;
-  imgCtx.clearRect(0, 0, imgCanvas.width, imgCanvas.height);
+
+  // Draw the image into the canvas
   imgCtx.drawImage(originalImage, 0, 0);
 }
 
-    function updateLayer(preserveView = false) {
-      const url = imgCanvas.toDataURL();
-
-      if (!imageLayer) {
-        imageLayer = new ol.layer.Image({
-          source: new ol.source.ImageStatic({
-            url: url,
-            imageExtent: imageExtent
-          })
-        });
-        map.addLayer(imageLayer);
-
-        if (!preserveView) {
-          map.getView().fit(imageExtent);
-        }
-
-      } else {
-        // Just replace the source image without touching the view
-        const source = new ol.source.ImageStatic({
-          url: url,
-          imageExtent: imageExtent
-        });
-        imageLayer.setSource(source);
-      }
-    }
+function updateLayer() {
+  // Just replace the source image.
+  // Using a new ImageStatic object is required, as property alteration isn't permitted.
+  const source = new ol.source.ImageStatic({
+    url: imgCanvas.toDataURL(),
+    imageExtent: imageExtent
+  });
+  imageLayer.setSource(source);
+}
 
 
 
@@ -140,8 +174,8 @@ document.getElementById('resetImageBtn').addEventListener('click', () => {
   const currentZoom = view.getZoom();
   const currentRotation = view.getRotation();
 
-  drawOriginalImage();
-  updateLayer(true); // update without fitting
+  restoreImage();
+  updateLayer(); // update without fitting
   toggleButtonAppearance('pickColorBtn', pickingColor);
 
   // Defer restoring view to ensure layer is fully replaced
