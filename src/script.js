@@ -46,12 +46,15 @@ function getButtonToggleState(buttonId){
   return btn.classList.contains('btn-primary');
 }
 
-function keyToolActiveTest() {
-  if (getButtonToggleState('pickColorBtn') | getButtonToggleState('measure-btn') | getButtonToggleState('drawLegBtn')) {
-    return true;
-  } else {
-    return false;
+function keyToolActiveTest(exclude=null) {
+  const list = new Set(['pickColorBtn', 'measure-btn', 'drawLegBtn']);
+  list.delete(exclude);
+  for (const item of list) {
+    if (getButtonToggleState(item)) {
+      return true;
+    }
   }
+  return false;
 }
 
 
@@ -199,8 +202,8 @@ document.getElementById('imageImporter').addEventListener('change', function (e)
 // Event listener: Colour picker
 // Image/map pixel selection and filter application.
 document.getElementById('pickColorBtn').addEventListener('click', () => {
-  // Ensure not other key tools are in use
-  if (keyToolActiveTest()) { return; }
+  // Ensure no other key tools are in use
+  if (keyToolActiveTest(exclude='pickColorBtn')) { return; }
 
   toggleButtonAppearance('pickColorBtn');
 
@@ -365,8 +368,8 @@ function getRandomColor() {
 
 // Event listener: Measure distance button
 document.getElementById('measure-btn').addEventListener('click', () => {
-  // Ensure not other key tools are in use
-  if (keyToolActiveTest()) { return; }
+  // Ensure no other key tools are in use
+  if (keyToolActiveTest(exclude='measure-btn')) { return; }
 
   if (drawInteraction) {
     map.removeInteraction(drawInteraction);
@@ -489,10 +492,12 @@ document.getElementById('clear-btn').addEventListener('click', () => {
 
 //---------------- Draw leg tools ----------------
 
-// Hold leg vectors
+/// Framework for deg drawing:
+
+// Initalise 'vectorSource' to hold leg vectors
 const vectorSource = new ol.source.Vector({ wrapX: false });
 
-// Create vector layer & specify styling
+// Create vector layer in OpenLayers & specify styling
 const vectorLayer = new ol.layer.Vector({
   source: vectorSource,
   zIndex: 9,
@@ -508,7 +513,7 @@ const vectorLayer = new ol.layer.Vector({
 });
 map.addLayer(vectorLayer);
 
-// Allow modification of leg vectors (e.g. cicle size change and position shcange)
+// Allow modification of leg vectors (e.g. circle size change and position change)
 const modify = new ol.interaction.Modify({ source: vectorSource });
 map.addInteraction(modify);
 
@@ -642,26 +647,20 @@ function addDrawInteractions() {
   map.addInteraction(snap);
 }
 
-let drawActive = false;
-
 document.getElementById('drawLegBtn').addEventListener('click', () => {
-  // Ensure not other key tools are in use
-  if (keyToolActiveTest()) { return; }
+  // Ensure no other key tools are in use
+  if (keyToolActiveTest(exclude='drawLegBtn')) { return; }
 
-  if (drawActive) {
-    removeDrawInteractions();
-    drawActive = false;
-    console.log('Drawing mode deactivated');
-    toggleButtonAppearance('drawLegBtn', drawActive);
-  } else {
+  //
+  toggleButtonAppearance('drawLegBtn');
+
+  if (getButtonToggleState('drawLegBtn')) {
     // Remove previous circles and lines
     vectorSource.getFeatures().forEach(f => vectorSource.removeFeature(f));
     circleFeatures.length = 0;
-
-    addDrawInteractions();
-    drawActive = true;
-    console.log('Drawing mode activated');
-    toggleButtonAppearance('drawLegBtn', drawActive);
+    addDrawInteractions();    
+  } else {
+    removeDrawInteractions();
   }
 });
 
@@ -670,8 +669,10 @@ document.getElementById('clearLegBtn').addEventListener('click', () => {
   vectorSource.clear();
   circleFeatures.length = 0;
   removeDrawInteractions();
-  drawActive = false;
-  toggleButtonAppearance('drawLegBtn', drawActive);
+  toggleButtonAppearance('drawLegBtn', false);
+  // Unhook event listeners ..................
+
+
 });
 
 
