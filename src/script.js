@@ -46,6 +46,13 @@ function getButtonToggleState(buttonId){
   return btn.classList.contains('btn-primary');
 }
 
+function keyToolActiveTest() {
+  if (getButtonToggleState('pickColorBtn') | getButtonToggleState('measure-btn') | getButtonToggleState('drawLegBtn')) {
+    return true;
+  } else {
+    return false;
+  }
+}
 
 
 
@@ -81,6 +88,13 @@ let map = new ol.Map({
 });
 let imageLayer = new ol.layer.Image();
 map.addLayer(imageLayer);
+
+// Handle double click (prevent zoom)
+map.getInteractions().forEach(function(interaction) {
+  if (interaction instanceof ol.interaction.DoubleClickZoom) {
+    map.removeInteraction(interaction);
+  }
+});
 
 // Ensure correct sizing with flex layout, after page load.
 // setTimeout(() => map.updateSize(), 100);       // Might be required but in testing it isn't.
@@ -185,6 +199,9 @@ document.getElementById('imageImporter').addEventListener('change', function (e)
 // Event listener: Colour picker
 // Image/map pixel selection and filter application.
 document.getElementById('pickColorBtn').addEventListener('click', () => {
+  // Ensure not other key tools are in use
+  if (keyToolActiveTest()) { return; }
+
   toggleButtonAppearance('pickColorBtn');
 
   if (getButtonToggleState('pickColorBtn')) {
@@ -280,162 +297,7 @@ document.getElementById('resetImageBtn').addEventListener('click', () => {
 
 
 
-
-
-
-
-//---------------- Background colour picker ----------------
-
-// Event listener: Set background colour
-document.getElementById('backgroundColorPicker').addEventListener('input', (e) => {
-    const hex = e.target.value;
-    document.getElementById('map').style.backgroundColor = hex;
-});
-
-
-
-//---------------- Rotation buttons ----------------
-
-// Event listener: Rotate left button
-document.getElementById('rotateLeftBtn').addEventListener('click', () => {
-  const view = map.getView();
-  view.setRotation(view.getRotation() - (Math.PI / 12)); // rotate 22.5° counterclockwise
-});
-// Event listener: Rotate right button
-document.getElementById('rotateRightBtn').addEventListener('click', () => {
-  const view = map.getView();
-  view.setRotation(view.getRotation() + (Math.PI / 12)); // rotate 22.5° clockwise
-});
-
-
-
-//---------------- Zoom buttons ----------------
-
-// Event listener: Zoom in button
-document.getElementById('zoomInBtn').addEventListener('click', () => {
-  const view = map.getView();
-  view.setZoom(view.getZoom() + 1);
-});
-// Event listener: Zoom out button
-document.getElementById('zoomOutBtn').addEventListener('click', () => {
-  const view = map.getView();
-  view.setZoom(view.getZoom() - 1);
-});
-
-
-
-//---------------- Reset view (position, rotation, zoom) ----------------
-
-// Event listener: Reset image/map view (position, rotation, zoom)
-document.getElementById('resetViewBtn').addEventListener('click', () => {
-  const view = map.getView();
-
-  // Animate return to default view.
-  view.animate({
-    rotation: 0,
-    duration: 300
-  }, () => {
-    view.fit(masterImageExtent, { duration: 300 });
-  });
-});
-
-
-
-//---------------- Fullscreen toggle ----------------
-
-/**
- * Get the full screen tools of the browser.
- *
- * @returns {any}
- */
-function getFullscreenElement(doc = document) {
-  return doc.fullscreenElement
-      || doc.webkitFullscreenElement
-      || doc.mozFullScreenElement
-      || doc.msFullscreenElement
-      || null;
-}
-
-/**
- * Make full screen request to browser.
- *
- * @returns {void}
- */
-async function requestFullscreen(container) {
-  const fn =
-    container.requestFullscreen ||
-    container.webkitRequestFullscreen ||
-    container.mozRequestFullScreen ||
-    container.msRequestFullscreen;
-
-  if (!fn) throw new Error("Fullscreen API not supported");
-
-  // Some prefixed methods don't return a promise; normalize.
-  const ret = fn.call(container);
-  if (ret && typeof ret.then === "function") await ret;
-}
-
-/**
- * Make exit full screen request to browser.
- *
- * @returns {void}
- */
-async function exitFullscreen(container=document) {
-  const fn =
-    container.exitFullscreen ||
-    container.webkitExitFullscreen ||
-    container.mozCancelFullScreen ||
-    container.msExitFullscreen;
-
-  if (!fn) throw new Error("Exit fullscreen not supported");
-
-  const ret = fn.call(container);
-  if (ret && typeof ret.then === "function") await ret;
-}
-
-// Event listener: Toggle full screen button.
-document.getElementById("fullscreenToggle").addEventListener("click", async () => {
-  const container = document.getElementById("appContainer");
-  try {
-    if (getFullscreenElement()) {
-      await exitFullscreen();
-    } else {
-      await requestFullscreen(container);
-    }
-  } catch (e) {
-    console.error("Fullscreen toggle failed:", e);
-  }
-});
-
-// Event listener: Keep sync with externally controlled fullscreen changes.
-["fullscreenchange", "webkitfullscreenchange", "mozfullscreenchange", "MSFullscreenChange"]
-  .forEach(evt => document.addEventListener(evt, () => {
-    const fs = !!getFullscreenElement();
-    // update UI based on fs
-}));
-
-
-
-//---------------- Zoom buttons ----------------
-
-// Event listener: Help button
-document.getElementById('helpBtn').addEventListener('click', () => {
-  const helpModal = new bootstrap.Modal(document.getElementById('helpModal'));
-  helpModal.show();
-});
-
-
-// Event listener: Import image button
-document.getElementById('importImageBtn').addEventListener('click', () => {
-  document.getElementById('imageImporter').click();
-});
-
-
-// Event listener: Disable right-click everywhere
-document.addEventListener('contextmenu', function (e) {
-  e.preventDefault();
-});
-
+//---------------- Distance measurement ----------------
 
 // Setup framework to handle distance measurement.
 let measureSource = new ol.source.Vector();
@@ -503,6 +365,9 @@ function getRandomColor() {
 
 // Event listener: Measure distance button
 document.getElementById('measure-btn').addEventListener('click', () => {
+  // Ensure not other key tools are in use
+  if (keyToolActiveTest()) { return; }
+
   if (drawInteraction) {
     map.removeInteraction(drawInteraction);
     drawInteraction = null;
@@ -622,27 +487,7 @@ document.getElementById('clear-btn').addEventListener('click', () => {
 
 
 
-// Handle double click (prevent zoom)
-map.getInteractions().forEach(function(interaction) {
-  if (interaction instanceof ol.interaction.DoubleClickZoom) {
-    map.removeInteraction(interaction);
-  }
-});
-
-
-
-// Event listener: On first page load, show helper notification
-document.addEventListener('DOMContentLoaded', () => {
-  const toastEl = document.getElementById('infoToastStarterHelp');
-  const toast = new bootstrap.Toast(toastEl, { delay: 30000 });
-  toast.show();
-});
-
-
-
-
-
-// Leg draw framework
+//---------------- Draw leg tools ----------------
 
 // Hold leg vectors
 const vectorSource = new ol.source.Vector({ wrapX: false });
@@ -800,6 +645,9 @@ function addDrawInteractions() {
 let drawActive = false;
 
 document.getElementById('drawLegBtn').addEventListener('click', () => {
+  // Ensure not other key tools are in use
+  if (keyToolActiveTest()) { return; }
+
   if (drawActive) {
     removeDrawInteractions();
     drawActive = false;
@@ -824,4 +672,162 @@ document.getElementById('clearLegBtn').addEventListener('click', () => {
   removeDrawInteractions();
   drawActive = false;
   toggleButtonAppearance('drawLegBtn', drawActive);
+});
+
+
+
+//---------------- Background colour picker ----------------
+
+// Event listener: Set background colour
+document.getElementById('backgroundColorPicker').addEventListener('input', (e) => {
+    const hex = e.target.value;
+    document.getElementById('map').style.backgroundColor = hex;
+});
+
+
+
+//---------------- Rotation buttons ----------------
+
+// Event listener: Rotate left button
+document.getElementById('rotateLeftBtn').addEventListener('click', () => {
+  const view = map.getView();
+  view.setRotation(view.getRotation() - (Math.PI / 12)); // rotate 22.5° counterclockwise
+});
+// Event listener: Rotate right button
+document.getElementById('rotateRightBtn').addEventListener('click', () => {
+  const view = map.getView();
+  view.setRotation(view.getRotation() + (Math.PI / 12)); // rotate 22.5° clockwise
+});
+
+
+
+//---------------- Zoom buttons ----------------
+
+// Event listener: Zoom in button
+document.getElementById('zoomInBtn').addEventListener('click', () => {
+  const view = map.getView();
+  view.setZoom(view.getZoom() + 1);
+});
+// Event listener: Zoom out button
+document.getElementById('zoomOutBtn').addEventListener('click', () => {
+  const view = map.getView();
+  view.setZoom(view.getZoom() - 1);
+});
+
+
+
+//---------------- Reset view (position, rotation, zoom) ----------------
+
+// Event listener: Reset image/map view (position, rotation, zoom)
+document.getElementById('resetViewBtn').addEventListener('click', () => {
+  const view = map.getView();
+
+  // Animate return to default view.
+  view.animate({
+    rotation: 0,
+    duration: 300
+  }, () => {
+    view.fit(masterImageExtent, { duration: 300 });
+  });
+});
+
+
+
+//---------------- Fullscreen toggle ----------------
+
+/**
+ * Get the full screen tools of the browser.
+ *
+ * @returns {any}
+ */
+function getFullscreenElement(doc = document) {
+  return doc.fullscreenElement
+      || doc.webkitFullscreenElement
+      || doc.mozFullScreenElement
+      || doc.msFullscreenElement
+      || null;
+}
+
+/**
+ * Make full screen request to browser.
+ *
+ * @returns {void}
+ */
+async function requestFullscreen(container) {
+  const fn =
+    container.requestFullscreen ||
+    container.webkitRequestFullscreen ||
+    container.mozRequestFullScreen ||
+    container.msRequestFullscreen;
+
+  if (!fn) throw new Error("Fullscreen API not supported");
+
+  // Some prefixed methods don't return a promise; normalize.
+  const ret = fn.call(container);
+  if (ret && typeof ret.then === "function") await ret;
+}
+
+/**
+ * Make exit full screen request to browser.
+ *
+ * @returns {void}
+ */
+async function exitFullscreen(container=document) {
+  const fn =
+    container.exitFullscreen ||
+    container.webkitExitFullscreen ||
+    container.mozCancelFullScreen ||
+    container.msExitFullscreen;
+
+  if (!fn) throw new Error("Exit fullscreen not supported");
+
+  const ret = fn.call(container);
+  if (ret && typeof ret.then === "function") await ret;
+}
+
+// Event listener: Toggle full screen button.
+document.getElementById("fullscreenToggle").addEventListener("click", async () => {
+  const container = document.getElementById("appContainer");
+  try {
+    if (getFullscreenElement()) {
+      await exitFullscreen();
+    } else {
+      await requestFullscreen(container);
+    }
+  } catch (e) {
+    console.error("Fullscreen toggle failed:", e);
+  }
+});
+
+// Event listener: Keep sync with externally controlled fullscreen changes.
+["fullscreenchange", "webkitfullscreenchange", "mozfullscreenchange", "MSFullscreenChange"]
+  .forEach(evt => document.addEventListener(evt, () => {
+    const fs = !!getFullscreenElement();
+    // update UI based on fs
+}));
+
+
+
+//---------------- Help button ----------------
+
+// Event listener: Help button
+document.getElementById('helpBtn').addEventListener('click', () => {
+  const helpModal = new bootstrap.Modal(document.getElementById('helpModal'));
+  helpModal.show();
+});
+
+
+
+//---------------- Other JS ----------------
+
+// Event listener: Disable right-click everywhere
+document.addEventListener('contextmenu', function (e) {
+  e.preventDefault();
+});
+
+// Event listener: On first page load, show helper notification
+document.addEventListener('DOMContentLoaded', () => {
+  const toastEl = document.getElementById('infoToastStarterHelp');
+  const toast = new bootstrap.Toast(toastEl, { delay: 30000 });
+  toast.show();
 });
