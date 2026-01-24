@@ -13,7 +13,7 @@
 // First there is the image/map display framework.
 // Then there are button event listeners that activate actions on the image/map display framework, sometimes aided by further framework.
 
-// 
+//
 
 // Colour filter/picker:
 // Using the colour of the pixel selected by the user and the threshold in the tool bar, make all pixels whose colour is outside the region of colour space transparent.
@@ -30,19 +30,31 @@
 // ---------------- General tools ----------------
 
 /**
- * Alters visual appearance of the given toggle button when toggled. 
+ * Alters visual appearance of the given toggle button when toggled.
  *
  * @returns {void}
  */
-function toggleButtonAppearance(buttonId, boolVariable) {
+function toggleButtonAppearance(buttonId, desiredState = null) {
+  // if no desired state given, invert whatever is present.
+  if (desiredState == null) {
+    desiredState = !getButtonToggleState(buttonId);
+  }
+
   const toggleButton = document.getElementById(buttonId);
-  if (boolVariable) {
+  if (desiredState) {
+    // make active
     toggleButton.classList.remove('btn-secondary');
     toggleButton.classList.add('btn-primary');
   } else {
+    // make inactive
     toggleButton.classList.remove('btn-primary');
     toggleButton.classList.add('btn-secondary');
   }
+}
+
+function getButtonToggleState(buttonId){
+  const btn = document.getElementById(buttonId);
+  return btn.classList.contains('btn-primary');
 }
 
 
@@ -71,25 +83,23 @@ let map = new ol.Map({
 
 // Global page variables
 //let imageLayer = null;
-let originalImage = null;
+let masterImage = new Image();
 let imageExtent = null;
-let imgCanvas = document.createElement('canvas');
-let imgCtx = imgCanvas.getContext('2d');
-let pickingColor = false;
+
+//let imgCanvas = document.createElement('canvas');
+//let imgCtx = imgCanvas.getContext('2d');
+
 let imageLayer = new ol.layer.Image();
 map.addLayer(imageLayer);
 
-// Create image framework, load image from source, and initialise. Note, adding a file to img.src is an asynchronouse action, thus initialision must also be done asynchronously. 
-const img = new Image();
-img.onload = function () {
-  // Copy image into global variable - For restoration after colour filtering.
-  originalImage = img;
+
+// Create image framework, load image from source, and initialise. Note, adding a file to img.src is an asynchronouse action, thus initialision must also be done asynchronously.
+masterImage.onload = function () {
+  imageExtent = [0, 0, masterImage.width, masterImage.height];
 
   // Render image on canvas.
-  imageExtent = [0, 0, img.width, img.height];
-  restoreImage();
-  updateLayer();
-  //updateLayer(imgCanvas);
+  ({ imgCanvas, imgCtx } = renderFullImageOnCanvas());
+  sendCanvasToOpenLayers(imgCanvas, imageExtent);
 
   // Reset view state
   map.getView().fit(imageExtent);
@@ -97,48 +107,54 @@ img.onload = function () {
 
 
 // Ensure correct sizing with flex layout, after page load.
-setTimeout(() => map.updateSize(), 100); 
+setTimeout(() => map.updateSize(), 100);
 
 
 
-// When image is selected, add image to framework source.
+// Event listener: Import image.
+// If a file has been selected, set as img source. Then automatically execute img.onload .
 document.getElementById('imageImporter').addEventListener('change', function (e) {
-  // If a file has been selected, set as img source. Then automatically executes img.onload .
   if (!e.target.files[0]) {
     console.error("No image selected.");
     return;
   }
-  img.src = URL.createObjectURL(e.target.files[0]);
+  masterImage.src = URL.createObjectURL(e.target.files[0]);
+  // Execute img.onload
 });
 
 
 /**
- * Render the global variable image (originalImage) in the image/map container.
+ * ##################################### TODO
  *
  * @returns {void}
  */
-function restoreImage() {
-  if (!originalImage){
+function renderFullImageOnCanvas() {
+  //// Render image in hidden canvas.
+  if (!masterImage){
     console.error("No original image.");
     return;
   }
-  imgCanvas = document.createElement('canvas');
-  imgCtx = imgCanvas.getContext('2d');
+
+  // Create new
+  let imgCanvas = document.createElement('canvas');
+  let imgCtx = imgCanvas.getContext('2d');
 
   // Match the canvas size to the image (clears canvas)
-  imgCanvas.width = originalImage.width;
-  imgCanvas.height = originalImage.height;
+  imgCanvas.width = masterImage.width;
+  imgCanvas.height = masterImage.height;
 
   // Draw the image into the canvas
-  imgCtx.drawImage(originalImage, 0, 0);
+  imgCtx.drawImage(masterImage, 0, 0);
+
+  return {imgCanvas, imgCtx};
 }
 
-function updateLayer() {
-  // Just replace the source image.
-  // Using a new ImageStatic object is required, as property alteration isn't permitted.
+function sendCanvasToOpenLayers(canvas, extent) {
+  //// Send rendered canvas to open layers.
+  // (Using a new ImageStatic object is required, as property alteration isn't permitted.)
   const source = new ol.source.ImageStatic({
-    url: imgCanvas.toDataURL(),
-    imageExtent: imageExtent
+    url: canvas.toDataURL(),
+    imageExtent: extent
   });
   imageLayer.setSource(source);
 }
@@ -147,99 +163,111 @@ function updateLayer() {
 
 
 
-
+// ---------------- Colour filter ----------------
 
 // Event listener: Colour picker
+// Image/map pixel selection and filter application.
 document.getElementById('pickColorBtn').addEventListener('click', () => {
-  // toggle global variable state
-  pickingColor = !pickingColor; 
+  toggleButtonAppearance('pickColorBtn');
 
-  if (pickingColor) {
+  if (getButtonToggleState('pickColorBtn')) {
     // activate picking mode
     const toastElement = document.getElementById('infoToastPickColour');
     const toast = new bootstrap.Toast(toastElement, { delay: 10000 });
     toast.show();
+
+    // Register map click event listener
+    map.on('click', pickPixelAndFilterImage);
+
+  } else {
+    // Unregister map click event listener
+    map.un('click', pickPixelAndFilterImage);
   }
-  toggleButtonAppearance('pickColorBtn', pickingColor);
 });
 
+//
+  function colorDistance(c1, c2) {
+    // Determine euclidean 'distance' between two colours in rgb colour space.
+    const dr = c1.r - c2.r;
+    const dg = c1.g - c2.g;
+    const db = c1.b - c2.b;
+    return Math.sqrt(dr * dr + dg * dg + db * db);
+  }
 
-// Event listener: Restore image/map colours after colour filtering.
-document.getElementById('resetImageBtn').addEventListener('click', () => {
-  if (!originalImage) return;
-
-  // Save current view state
-  const view = map.getView();
-  const currentCenter = view.getCenter();
-  const currentZoom = view.getZoom();
-  const currentRotation = view.getRotation();
-
-  restoreImage();
-  updateLayer(); // update without fitting
-  toggleButtonAppearance('pickColorBtn', pickingColor);
-
-  // Defer restoring view to ensure layer is fully replaced
-  setTimeout(() => {
-    view.setCenter(currentCenter);
-    view.setZoom(currentZoom);
-    view.setRotation(currentRotation);
-  }, 0); // delay to next tick of JS event loop
-});
-
-
-// Event listener: Colour picker. Image/map pixel selection and filter application.
-map.on('click', function (evt) {
-  if (!pickingColor || !imageExtent) return;
-  pickingColor = false;
-  toggleButtonAppearance('pickColorBtn', pickingColor);
-
-  const coordinate = evt.coordinate;
+function pickPixelAndFilterImage(event) {
+  // Get pixel colour
+  const coordinate = event.coordinate;
   const extent = imageExtent;
-
   const x = Math.floor((coordinate[0] - extent[0]) / (extent[2] - extent[0]) * imgCanvas.width);
   const y = Math.floor((extent[3] - coordinate[1]) / (extent[3] - extent[1]) * imgCanvas.height);
-
   const pixel = imgCtx.getImageData(x, y, 1, 1).data;
   const pickedColor = { r: pixel[0], g: pixel[1], b: pixel[2] };
 
+  // Get threshold
   const threshold = parseInt(document.getElementById('threshold').value, 10) || 0;
-  applyTransparency(pickedColor, threshold);
+
+  // Render new image in canvas.
+  ({ imgCanvas, imgCtx } = renderFullImageOnCanvas());
+
+  // Pull data from canvas
+  const imageData = imgCtx.getImageData(0, 0, imgCanvas.width, imgCanvas.height);
+
+  // Filter (isolate colours)
+  for (let i = 0; i < imageData.data.length; i += 4) {
+    const pixelColour = {r: imageData.data[i], g: imageData.data[i + 1], b: imageData.data[i + 2]};
+    const dist = colorDistance(pickedColor, pixelColour);
+    if (dist > threshold) {
+      imageData.data[i + 3] = 0;
+    }
+  }
+
+  // Push data to canvas
+  imgCtx.putImageData(imageData, 0, 0);
+
+  // Update OpenLayers render with canvas
+  sendCanvasToOpenLayers(imgCanvas, imageExtent);
+
+  // Unregister map click event listener
+  map.un('click', pickPixelAndFilterImage);
+
+  // Return toggle button to non-pick state
+  toggleButtonAppearance('pickColorBtn', desiredState=false);
+}
+
+
+// Event listener: Restore image/map colours.
+document.getElementById('resetImageBtn').addEventListener('click', () => {
+  if (!masterImage) {
+    console.error("No master image to restore with.")
+    return;
+  }
+
+  // the follow comments are usefull to know, but not required here.
+
+  // Save current view state
+  // const view = map.getView();
+  // const currentCenter = view.getCenter();
+  // const currentZoom = view.getZoom();
+  // const currentRotation = view.getRotation();
+
+  ({ imgCanvas, imgCtx } = renderFullImageOnCanvas());
+  sendCanvasToOpenLayers(imgCanvas, imageExtent);
+
+  // Defer restoring view to ensure layer is fully replaced
+  // setTimeout(() => {
+  //   view.setCenter(currentCenter);
+  //   view.setZoom(currentZoom);
+  //   view.setRotation(currentRotation);
+  // }, 0); // delay to next tick of JS event loop
 });
 
 
 
-/**
- * Determines euclidean 'distance' between two colours in rgb colour space.
- *
- * @returns {float}
- */
-function colorDistance(c1, c2) {
-  const dr = c1.r - c2.r;
-  const dg = c1.g - c2.g;
-  const db = c1.b - c2.b;
-  return Math.sqrt(dr * dr + dg * dg + db * db);
-}
 
-    
-/**
- * Applied transparency to all pixels outside of rgb threshold.
- *
- * @returns {float}
- */
-function applyTransparency(rgb, threshold) {
-  const imageData = imgCtx.getImageData(0, 0, imgCanvas.width, imgCanvas.height);
-  const data = imageData.data;
-  for (let i = 0; i < data.length; i += 4) {
-    const r = data[i], g = data[i + 1], b = data[i + 2];
-    const dist = colorDistance(rgb, { r, g, b });
-    if (dist > threshold) {
-      data[i + 3] = 0;
-    }
-  }
-  imgCtx.putImageData(imageData, 0, 0);
-  updateLayer();
-}
 
+
+
+//---------------- Background colour picker ----------------
 
 // Event listener: Background colour picker event redirect
 document.getElementById('pickBackgroundBtn').addEventListener('click', () => {
@@ -272,7 +300,7 @@ document.getElementById('resetViewBtn').addEventListener('click', () => {
   });
 });
 
-    
+
 // Event listener: Zoom buttons
 document.getElementById('zoomInBtn').addEventListener('click', () => {
   const view = map.getView();
@@ -645,7 +673,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Leg draw framework
 
-// Hold leg vectors 
+// Hold leg vectors
 const vectorSource = new ol.source.Vector({ wrapX: false });
 
 // Create vector layer & specify styling
