@@ -13,17 +13,6 @@
 // First there is the image/map display framework.
 // Then there are button event listeners that activate actions on the image/map display framework, sometimes aided by further framework.
 
-//
-
-// Colour filter/picker:
-// Using the colour of the pixel selected by the user and the threshold in the tool bar, make all pixels whose colour is outside the region of colour space transparent.
-// This filtering is applied to the rendered image.
-// To reset the colours, it replaces the rendered image with a backup image stored in a global variable.
-
-
-
-
-
 
 
 
@@ -63,6 +52,16 @@ function getButtonToggleState(buttonId){
 
 // ---------------- Core image/map display framework ----------------
 
+// Initalise the OpenLayers diaplsy framework.
+// Initalise a layer to hold the image.
+// Initalise a variable to hold a master copy of the imported image file.
+// Add event listeners to handle image import.
+// The import process works as follows:
+//     1. set image as source for global variable 'masterImage' and wait for completion (is an asynchronous process).
+//     2. set global variable 'masterImageExtent'
+//     3. Render masterImage on a new canvas.
+//     4. Send the canvas to OpenLayers to display.
+
 
 
 
@@ -80,47 +79,16 @@ let map = new ol.Map({
     })
   ]),
 });
-
-// Global page variables
-//let imageLayer = null;
-let masterImage = new Image();
-let imageExtent = null;
-
-//let imgCanvas = document.createElement('canvas');
-//let imgCtx = imgCanvas.getContext('2d');
-
 let imageLayer = new ol.layer.Image();
 map.addLayer(imageLayer);
 
-
-// Create image framework, load image from source, and initialise. Note, adding a file to img.src is an asynchronouse action, thus initialision must also be done asynchronously.
-masterImage.onload = function () {
-  imageExtent = [0, 0, masterImage.width, masterImage.height];
-
-  // Render image on canvas.
-  ({ imgCanvas, imgCtx } = renderFullImageOnCanvas());
-  sendCanvasToOpenLayers(imgCanvas, imageExtent);
-
-  // Reset view state
-  map.getView().fit(imageExtent);
-};
-
-
 // Ensure correct sizing with flex layout, after page load.
-setTimeout(() => map.updateSize(), 100);
+// setTimeout(() => map.updateSize(), 100);       // Might be required but in testing it isn't.
 
 
-
-// Event listener: Import image.
-// If a file has been selected, set as img source. Then automatically execute img.onload .
-document.getElementById('imageImporter').addEventListener('change', function (e) {
-  if (!e.target.files[0]) {
-    console.error("No image selected.");
-    return;
-  }
-  masterImage.src = URL.createObjectURL(e.target.files[0]);
-  // Execute img.onload
-});
+// Global page variables
+let masterImage = new Image();
+let masterImageExtent = null;
 
 
 /**
@@ -159,11 +127,60 @@ function sendCanvasToOpenLayers(canvas, extent) {
   imageLayer.setSource(source);
 }
 
+// Create image framework, load image from source, and initialise. Note, adding a file to img.src is an asynchronouse action, thus initialision must also be done asynchronously.
+masterImage.onload = function () {
+  masterImageExtent = [0, 0, masterImage.width, masterImage.height];
+
+  // Render image on canvas.
+  ({ imgCanvas, imgCtx } = renderFullImageOnCanvas());
+  sendCanvasToOpenLayers(imgCanvas, masterImageExtent);
+
+  // Reset view state
+  map.getView().fit(masterImageExtent);
+};
+
+// Event listener: Import image.
+// If a file has been selected, set as img source. Then automatically execute img.onload .
+document.getElementById('imageImporter').addEventListener('change', function (e) {
+  if (!e.target.files[0]) {
+    console.error("No image selected.");
+    return;
+  }
+  masterImage.src = URL.createObjectURL(e.target.files[0]);
+  // Execute img.onload
+});
+
+
+
+
 
 
 
 
 // ---------------- Colour filter ----------------
+
+
+// Using the colour of the pixel selected by the user and the threshold in the tool bar, make all pixels whose colour is outside the region of colour space transparent.
+// This filtering is applied to the rendered image.
+// To reset the colours, it replaces the rendered image with a backup image stored in a global variable.
+
+// When the colour picker button is pressed, toggle map click listener bool state.
+// On next map click:
+//     1. Get picked pixel colour
+//     2. Get threshold
+//     3. Render master image on a new canvas.
+//     4. Get pixel data from canvas.
+//     5. Modify the pixel data using the picked pixel colour, threshold, and 'distance rule'.
+//     6. Return new pixel data to canvas.
+//     7. Push canvas to OpenLayers
+//     8. Remove map click event listener
+//     9. Untoggle colour picker button.
+
+// When the reset image button is pressed:
+//     1. Render master image on a new canvas.
+//     2. Get pixel data from canvas.
+
+
 
 // Event listener: Colour picker
 // Image/map pixel selection and filter application.
@@ -197,7 +214,7 @@ document.getElementById('pickColorBtn').addEventListener('click', () => {
 function pickPixelAndFilterImage(event) {
   // Get pixel colour
   const coordinate = event.coordinate;
-  const extent = imageExtent;
+  const extent = masterImageExtent;
   const x = Math.floor((coordinate[0] - extent[0]) / (extent[2] - extent[0]) * imgCanvas.width);
   const y = Math.floor((extent[3] - coordinate[1]) / (extent[3] - extent[1]) * imgCanvas.height);
   const pixel = imgCtx.getImageData(x, y, 1, 1).data;
@@ -225,7 +242,7 @@ function pickPixelAndFilterImage(event) {
   imgCtx.putImageData(imageData, 0, 0);
 
   // Update OpenLayers render with canvas
-  sendCanvasToOpenLayers(imgCanvas, imageExtent);
+  sendCanvasToOpenLayers(imgCanvas, masterImageExtent);
 
   // Unregister map click event listener
   map.un('click', pickPixelAndFilterImage);
@@ -251,7 +268,7 @@ document.getElementById('resetImageBtn').addEventListener('click', () => {
   // const currentRotation = view.getRotation();
 
   ({ imgCanvas, imgCtx } = renderFullImageOnCanvas());
-  sendCanvasToOpenLayers(imgCanvas, imageExtent);
+  sendCanvasToOpenLayers(imgCanvas, masterImageExtent);
 
   // Defer restoring view to ensure layer is fully replaced
   // setTimeout(() => {
@@ -276,25 +293,25 @@ document.getElementById('backgroundColorPicker').addEventListener('input', (e) =
 });
 
 
+
+//---------------- Reset view (position, rotation, zoom) ----------------
+
 // Event listener: Reset image/map view (position, rotation, zoom)
 document.getElementById('resetViewBtn').addEventListener('click', () => {
-  if (!imageExtent) return;
-
   const view = map.getView();
 
-  // Animate rotation to 0 first, THEN fit the view
+  // Animate return to default view.
   view.animate({
     rotation: 0,
     duration: 300
   }, () => {
-    // After rotation is done, fit the extent
-    view.fit(imageExtent, {
-      duration: 300,
-      //padding: [20, 20, 20, 20]
-    });
+    view.fit(masterImageExtent, { duration: 300 });
   });
 });
 
+
+
+//---------------- Zoom buttons ----------------
 
 // Event listener: Zoom buttons
 document.getElementById('zoomInBtn').addEventListener('click', () => {
@@ -306,6 +323,9 @@ document.getElementById('zoomOutBtn').addEventListener('click', () => {
   view.setZoom(view.getZoom() - 1);
 });
 
+
+
+//---------------- Fullscreen toggle ----------------
 
 /**
  * Get the full screen tools of the browser.
@@ -325,17 +345,17 @@ function getFullscreenElement(doc = document) {
  *
  * @returns {void}
  */
-async function requestFullscreen(el) {
+async function requestFullscreen(container) {
   const fn =
-    el.requestFullscreen ||
-    el.webkitRequestFullscreen ||
-    el.mozRequestFullScreen ||
-    el.msRequestFullscreen;
+    container.requestFullscreen ||
+    container.webkitRequestFullscreen ||
+    container.mozRequestFullScreen ||
+    container.msRequestFullscreen;
 
   if (!fn) throw new Error("Fullscreen API not supported");
 
   // Some prefixed methods don't return a promise; normalize.
-  const ret = fn.call(el);
+  const ret = fn.call(container);
   if (ret && typeof ret.then === "function") await ret;
 }
 
@@ -344,87 +364,41 @@ async function requestFullscreen(el) {
  *
  * @returns {void}
  */
-async function exitFullscreen(doc = document) {
+async function exitFullscreen(container=document) {
   const fn =
-    doc.exitFullscreen ||
-    doc.webkitExitFullscreen ||
-    doc.mozCancelFullScreen ||
-    doc.msExitFullscreen;
+    container.exitFullscreen ||
+    container.webkitExitFullscreen ||
+    container.mozCancelFullScreen ||
+    container.msExitFullscreen;
 
   if (!fn) throw new Error("Exit fullscreen not supported");
 
-  const ret = fn.call(doc);
+  const ret = fn.call(container);
   if (ret && typeof ret.then === "function") await ret;
 }
 
-
 // Event listener: Toggle full screen button.
 document.getElementById("fullscreenToggle").addEventListener("click", async () => {
-  const el = document.getElementById("appContainer");
-
+  const container = document.getElementById("appContainer");
   try {
-    if (!getFullscreenElement()) {
-      await requestFullscreen(el);
-    } else {
+    if (getFullscreenElement()) {
       await exitFullscreen();
+    } else {
+      await requestFullscreen(container);
     }
   } catch (e) {
-    // Useful during dev; you can downgrade to a console.warn in production.
-    console.warn("Fullscreen toggle failed:", e);
+    console.error("Fullscreen toggle failed:", e);
   }
 });
 
-// Event listener: Full screen toggle button state in sync with browser.
+// Event listener: Keep sync with externally controlled fullscreen changes.
 ["fullscreenchange", "webkitfullscreenchange", "mozfullscreenchange", "MSFullscreenChange"]
   .forEach(evt => document.addEventListener(evt, () => {
     const fs = !!getFullscreenElement();
     // update UI based on fs
-  }));
+}));
 
 
-    // document.getElementById('fullscreenToggle').addEventListener('click', () => {
-    //   const container = document.getElementById('appContainer');
-
-    //   const isFullscreen = document.fullscreenElement ||
-    //                       document.webkitFullscreenElement ||
-    //                       document.mozFullScreenElement ||
-    //                       document.msFullscreenElement;
-
-    //   if (!isFullscreen) {
-    //     if (container.requestFullscreen) {
-    //       container.requestFullscreen();
-    //     } else if (container.webkitRequestFullscreen) {
-    //       container.webkitRequestFullscreen();
-    //     } else if (container.mozRequestFullScreen) {
-    //       container.mozRequestFullScreen();
-    //     } else if (container.msRequestFullscreen) {
-    //       container.msRequestFullscreen();
-    //     } else {
-    //       console.warn("Fullscreen API is not supported.");
-    //     }
-    //   } else {
-    //     if (document.exitFullscreen) {
-    //       document.exitFullscreen();
-    //     } else if (document.webkitExitFullscreen) {
-    //       document.webkitExitFullscreen();
-    //     } else if (document.mozCancelFullScreen) {
-    //       document.mozCancelFullScreen();
-    //     } else if (document.msExitFullscreen) {
-    //       document.msExitFullscreen();
-    //     } else {
-    //       console.warn("Exit fullscreen is not supported.");
-    //     }
-    //   }
-    // });
-    //The following is a better version. TODO: replace above with bellow.
-    // document.getElementById('fullscreenToggle').addEventListener('click', async () => {
-    //   const el = document.getElementById('appContainer');
-    //   if (!document.fullscreenElement) {
-    //     try { await el.requestFullscreen(); } catch (e) {}
-    //   } else {
-    //     try { await document.exitFullscreen(); } catch (e) {}
-    //   }
-    // });
 
 
 
