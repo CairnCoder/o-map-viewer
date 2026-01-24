@@ -1,9 +1,5 @@
-// Comments:
-// This is not perfect, there are some fixes to be done, but the bulk function works. It will be simplified at some point in the future. Variable type definitions will be added.
-
-
-// Image/map rendering mechanism:
-// TODO: describe
+//---------------- Comments ----------------
+// Mostly ok. Items still needing to be refactored are: draw leg and measure distance. Everything also need to have suitable comments added. 
 
 
 
